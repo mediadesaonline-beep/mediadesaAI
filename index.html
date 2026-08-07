@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Desa | Next-Gen Rural Information</title>
-    <!-- Tailwind CSS -->
+    <title>Media Desa Online - Portal Berita Desa Terkini</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -20,660 +16,714 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        ai: {
-                            light: '#4f46e5', // Indigo 600
-                            dark: '#818cf8',  // Indigo 400
-                            accent: '#06b6d4', // Cyan 500
-                        },
-                        dark: {
-                            bg: '#0f172a',    // Slate 900
-                            card: '#1e293b',  // Slate 800
-                            border: '#334155' // Slate 700
-                        }
-                    },
-                    animation: {
-                        'gradient-x': 'gradient-x 15s ease infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        'gradient-x': {
-                            '0%, 100%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'left center'
-                            },
-                            '50%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'right center'
-                            }
-                        }
+                        'brand-red': '#b91c1c', /* Warna merah khas portal berita */
+                        'brand-dark': '#111827',
+                        'brand-gray': '#f3f4f6',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Custom scrollbar for webkit */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Custom Styles for specific news portal UI needs */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        ::-webkit-scrollbar-track {
-            background: transparent;
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        ::-webkit-scrollbar-thumb {
-            background-color: rgba(156, 163, 175, 0.5);
-            border-radius: 20px;
+        .number-bullet {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-right: 1rem;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background-color: rgba(71, 85, 105, 0.8);
-        }
-        
-        /* Glassmorphism effects */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .dark .glass-nav {
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .dark .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-        }
-
-        /* AI glowing effect */
-        .ai-glow {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-            transition: box-shadow 0.3s ease;
-        }
-        .ai-glow:hover {
-            box-shadow: 0 0 25px rgba(79, 70, 229, 0.6);
-        }
-        
-        /* Neural network background pattern */
-        .bg-neural {
-            background-image: radial-gradient(rgba(79, 70, 229, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .dark .bg-neural {
-            background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
+        .popular-item:hover .number-bullet {
+            color: #b91c1c;
+            transition: color 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-800 dark:bg-dark-bg dark:text-gray-200 transition-colors duration-300 font-sans antialiased bg-neural min-h-screen flex flex-col">
+<body class="bg-white dark:bg-slate-950 text-gray-800 dark:text-slate-100 font-sans transition-colors duration-300">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
+    <!-- Top Bar -->
+    <div class="bg-brand-dark text-gray-300 text-xs py-1.5 px-4 hidden md:block border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex space-x-4 items-center">
+                <span id="current-date" class="font-medium"></span>
+                <span class="text-gray-500">|</span>
+                <a href="#" data-i18n="about" class="hover:text-white transition">Tentang Kami</a>
+                <a href="https://mediadesaonlineinfo.blogspot.com/2023/08/redaksi-media-desa-online.html" target="_blank" data-i18n="editorial" class="hover:text-white transition">Redaksi</a>
+                <a href="#" data-i18n="cyber_guidelines" class="hover:text-white transition">Pedoman Media Siber</a>
+            </div>
+            <div class="flex space-x-4 items-center">
+                <span class="font-bold text-white bg-brand-red px-2 py-0.5 rounded-sm" data-i18n="trending">Trending:</span>
+                <a href="#" class="hover:text-white transition">#DanaDesa2026</a>
+                <a href="#" class="hover:text-white transition">#DesaWisata</a>
+                <a href="#" class="hover:text-white transition">#PilkadesSerentak</a>
+
+                <!-- Language Switcher & Dark/Light Mode Toggle -->
+                <div class="flex items-center space-x-3 ml-2 border-l border-gray-700 pl-3">
+                    <!-- 3 Languages Selector (ID / JV / EN) -->
+                    <div class="flex items-center space-x-1 bg-slate-800/90 p-0.5 rounded border border-gray-700">
+                        <i class="fas fa-globe text-gray-400 text-xs px-1"></i>
+                        <button onclick="changeLang('id')" id="btn-lang-id" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-brand-red text-white transition">ID</button>
+                        <button onclick="changeLang('jv')" id="btn-lang-jv" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-gray-300 hover:text-white transition">JV</button>
+                        <button onclick="changeLang('en')" id="btn-lang-en" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-gray-300 hover:text-white transition">EN</button>
+                    </div>
+
+                    <!-- Theme Switcher Button -->
+                    <button id="theme-toggle-btn" onclick="toggleTheme()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 p-1.5 rounded-full border border-gray-700 transition flex items-center justify-center w-7 h-7" title="Ganti Mode Gelap/Terang">
+                        <i id="theme-icon" class="fas fa-moon text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 dark:text-gray-200 text-2xl focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="scrollToTop()">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-ai-light to-ai-accent flex items-center justify-center mr-3 shadow-lg group-hover:shadow-ai-light/50 transition-shadow">
-                        <i class="fa-solid fa-network-wired text-white text-xl"></i>
-                    </div>
-                    <span class="font-bold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-ai-light to-ai-accent">Media Desa</span>
-                    <span class="text-xs ml-2 px-2 py-1 rounded-full bg-ai-light/10 text-ai-light dark:text-ai-dark border border-ai-light/20 font-semibold hidden sm:inline-block">AI Enhanced</span>
-                </div>
-
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#home" class="nav-link text-sm font-semibold text-gray-600 hover:text-ai-light dark:text-gray-300 dark:hover:text-ai-dark transition-colors" data-en="Home" data-id="Beranda">Home</a>
-                    <a href="#news" class="nav-link text-sm font-semibold text-gray-600 hover:text-ai-light dark:text-gray-300 dark:hover:text-ai-dark transition-colors" data-en="News" data-id="Berita">News</a>
-                    <a href="#testimonials" class="nav-link text-sm font-semibold text-gray-600 hover:text-ai-light dark:text-gray-300 dark:hover:text-ai-dark transition-colors" data-en="Testimonials" data-id="Testimoni">Testimonials</a>
-                    <a href="#about" class="nav-link text-sm font-semibold text-gray-600 hover:text-ai-light dark:text-gray-300 dark:hover:text-ai-dark transition-colors" data-en="About" data-id="Tentang">About</a>
-                </div>
-
-                <!-- Controls: Language & Theme -->
-                <div class="flex items-center space-x-4">
-                    <!-- Language Toggle -->
-                    <button id="langToggle" class="flex items-center space-x-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-dark-border hover:bg-gray-100 dark:hover:bg-dark-card transition-colors focus:outline-none" aria-label="Toggle Language">
-                        <i class="fa-solid fa-globe text-sm text-ai-light dark:text-ai-dark"></i>
-                        <span id="currentLang" class="text-sm font-semibold">EN</span>
-                    </button>
-                    
-                    <!-- Theme Toggle -->
-                    <button id="themeToggle" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
-                        <i class="fa-solid fa-moon dark:hidden"></i>
-                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
-                    </button>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 dark:text-gray-300 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="hidden md:hidden glass-nav border-t border-gray-200 dark:border-dark-border">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-card" data-en="Home" data-id="Beranda">Home</a>
-                <a href="#news" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-card" data-en="Latest News" data-id="Berita Terbaru">Latest News</a>
-                <a href="#testimonials" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-card" data-en="Testimonials" data-id="Testimoni">Testimonials</a>
-                <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-card" data-en="About Us" data-id="Tentang Kami">About Us</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex-grow">
-        <!-- Abstract AI background shapes -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full overflow-hidden -z-10 pointer-events-none">
-            <div class="absolute top-[20%] left-[10%] w-72 h-72 bg-ai-light/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse-slow"></div>
-            <div class="absolute top-[40%] right-[10%] w-80 h-80 bg-ai-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse-slow" style="animation-delay: 1s;"></div>
-            <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-t from-ai-light/10 to-transparent rounded-full filter blur-3xl"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card border-ai-light/30 mb-8 mx-auto shadow-sm">
-                <span class="relative flex h-3 w-3">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-ai-accent opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-ai-accent"></span>
-                </span>
-                <span class="text-sm font-medium text-gray-600 dark:text-gray-300 translatable" data-en="AI-Powered Rural Insights Live" data-id="Wawasan Pedesaan Berbasis AI Aktif">AI-Powered Rural Insights Live</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-                <span class="block text-gray-900 dark:text-white translatable" data-en="Empowering Villages" data-id="Memberdayakan Desa">Empowering Villages</span>
-                <span class="block bg-clip-text text-transparent bg-gradient-to-r from-ai-light via-purple-500 to-ai-accent animate-gradient-x translatable" data-en="Through Technology" data-id="Melalui Teknologi">Through Technology</span>
-            </h1>
-            
-            <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 mx-auto mb-10 translatable" data-en="Discover the heartbeat of rural Indonesia. We bring modern information, digital potential, and AI-driven insights to local communities." data-id="Temukan denyut nadi pedesaan Indonesia. Kami menghadirkan informasi modern, potensi digital, dan wawasan berbasis AI ke masyarakat lokal.">
-                Discover the heartbeat of rural Indonesia. We bring modern information, digital potential, and AI-driven insights to local communities.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="https://mediadesaonlineinfo.blogspot.com/" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center items-center px-8 py-3.5 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-ai-light to-ai-dark hover:from-ai-dark hover:to-ai-light shadow-lg hover:shadow-ai-light/40 transition-all duration-300 translatable" data-en="Explore Latest News" data-id="Jelajahi Berita Terbaru">
-                    Explore Latest News <i class="fa-solid fa-arrow-right ml-2"></i>
+                <a href="#" class="flex items-center">
+                    <img src="ChatGPT_Image_7_Agu_2026__17.51.11-removebg-preview(1)_3.png" alt="Media Desa Online DIY Logo" class="h-14 md:h-16 w-auto object-contain" onerror="this.src='https://placehold.co/200x60/111827/ffffff?text=MEDIA+DESA+ONLINE'">
                 </a>
-                <a href="#testimonials" class="inline-flex justify-center items-center px-8 py-3.5 border border-gray-300 dark:border-dark-border text-base font-medium rounded-xl text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-dark-card/50 hover:bg-gray-50 dark:hover:bg-dark-border shadow-sm backdrop-blur-sm transition-all duration-300 translatable" data-en="View Testimonials" data-id="Lihat Testimoni">
-                    View Testimonials
-                </a>
-            </div>
-        </div>
-        
-        <!-- Scrolling Tech Marquee -->
-        <div class="mt-20 border-y border-gray-200 dark:border-dark-border py-4 bg-white/30 dark:bg-black/20 backdrop-blur-md overflow-hidden relative">
-            <div class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-gray-50 dark:from-dark-bg to-transparent z-10"></div>
-            <div class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-gray-50 dark:from-dark-bg to-transparent z-10"></div>
-            
-            <div class="flex whitespace-nowrap animate-[scroll_30s_linear_infinite]">
-                <!-- Repeated content for smooth scrolling -->
-                <div class="flex space-x-12 px-6 items-center">
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-microchip"></i> Smart Village</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-database"></i> Big Data</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-robot"></i> AI Automation</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-seedling"></i> AgriTech</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-wifi"></i> Digital Connectivity</span>
+
+                <!-- Search Bar -->
+                <div class="hidden md:flex items-center w-1/3">
+                    <div class="relative w-full">
+                        <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Cari berita desa..." class="w-full bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-slate-700 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-red transition text-sm">
+                        <button class="absolute right-3 top-2 text-gray-500 dark:text-gray-400 hover:text-brand-red">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="flex space-x-12 px-6 items-center">
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-microchip"></i> Smart Village</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-database"></i> Big Data</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-robot"></i> AI Automation</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-seedling"></i> AgriTech</span>
-                    <span class="text-gray-500 font-semibold opacity-60 flex items-center gap-2"><i class="fa-solid fa-wifi"></i> Digital Connectivity</span>
+
+                <!-- User Account/Login -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <a href="#" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-brand-red flex items-center">
+                        <i class="fas fa-user-circle mr-1"></i> <span data-i18n="login">Masuk</span>
+                    </a>
                 </div>
             </div>
         </div>
-        <style>
-            @keyframes scroll {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-            }
-        </style>
-    </section>
 
-    <!-- Latest News Section -->
-    <section id="news" class="py-20 bg-white dark:bg-[#0b1121] transition-colors relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-sm font-bold text-ai-light dark:text-ai-dark tracking-wide uppercase mb-2 translatable" data-en="Updates" data-id="Pembaruan">Updates</h2>
-                <p class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white translatable" data-en="Latest News" data-id="Berita Terbaru">Latest News</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-ai-light to-ai-accent mx-auto mt-4 rounded-full"></div>
+        <!-- Navigation Menu -->
+        <nav id="main-nav" class="hidden md:block bg-brand-gray dark:bg-slate-800/90 border-b border-gray-200 dark:border-slate-700 transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-4">
+                <ul class="flex flex-col md:flex-row md:space-x-8 text-sm font-bold text-gray-700 dark:text-gray-200 py-2 md:py-0 overflow-x-auto whitespace-nowrap">
+                    <li><a href="#" data-i18n="nav_village_news" class="block py-3 text-brand-red border-b-2 border-brand-red">Berita Desa</a></li>
+                    <li><a href="#" data-i18n="nav_diy_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita DIY & Sekitarnya</a></li>
+                    <li><a href="#" data-i18n="nav_regional_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita Daerah</a></li>
+                    <li><a href="#" data-i18n="nav_national_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita Nasional</a></li>
+                    <li><a href="#" data-i18n="nav_culture_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita Budaya</a></li>
+                    <li><a href="#" data-i18n="nav_umkm_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita UMKM</a></li>
+                    <li><a href="https://mediadesaonlineinfo.blogspot.com/2026/08/wali-kota-yogyakarta-hasto-wardoyo.html" target="_blank" data-i18n="nav_edu_news" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Berita Pendidikan</a></li>
+                    <li><a href="#" data-i18n="nav_opinion" class="block py-3 hover:text-brand-red border-b-2 border-transparent hover:border-brand-red transition">Gagasan</a></li>
+                </ul>
             </div>
+        </nav>
+    </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="newsContainer">
-                <!-- News Item 1 -->
-                <article class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-200 dark:border-dark-border flex flex-col h-full transform hover:-translate-y-1">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3 space-x-4">
-                            <span class="px-2 py-1 bg-ai-light/10 text-ai-light dark:text-ai-dark text-xs font-semibold rounded border border-ai-light/20 translatable" data-en="Community" data-id="Komunitas">Community</span>
-                            <span class="flex items-center"><i class="fa-regular fa-calendar mr-1"></i> <span class="translatable-date" data-date="2026-07-20">July 20, 2026</span></span>
-                            <span class="flex items-center text-ai-light dark:text-ai-accent"><i class="fa-solid fa-star mr-1"></i> Highlight</span>
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Top Ad Banner: Cerita Kita Publisher -->
+        <div class="w-full mb-8 relative overflow-hidden rounded-xl border border-amber-500/50 bg-gradient-to-r from-emerald-950 via-green-900 to-emerald-950 shadow-lg group">
+            <a href="https://api.whatsapp.com/send/?phone=628551236277&text=Halo%20Cerita%20Kita%20Publisher,%20saya%20tertarik%20pesan%20koleksi%20Buku%20Inspiratif" target="_blank" rel="noopener noreferrer" class="block w-full h-full p-4 md:p-0">
+                <div class="flex flex-col md:flex-row items-center justify-between md:h-[90px]">
+                    <!-- Left: Logo/Badge -->
+                    <div class="flex items-center space-x-3 md:px-6 mb-3 md:mb-0 w-full md:w-auto justify-center md:justify-start">
+                        <div class="hidden md:flex bg-gradient-to-br from-amber-300 to-amber-500 text-slate-900 font-black p-1 rounded-full h-12 w-12 items-center justify-center text-center shadow-inner border-2 border-amber-200">
+                            <i class="fas fa-award text-2xl text-emerald-900"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-ai-light dark:group-hover:text-ai-dark transition-colors translatable" data-en="Klaten Regent Invites Citizens to Liven Up the Day" data-id="Bupati Klaten Ajak Warga Gayengkan Hari...">
-                            Klaten Regent Invites Citizens to Liven Up the Day
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-grow mb-4 translatable" data-en="Local government encourages community participation in upcoming local events to foster unity and cultural pride across villages." data-id="Pemerintah daerah mendorong partisipasi masyarakat dalam acara lokal mendatang untuk menumbuhkan persatuan dan kebanggaan budaya di seluruh desa.">
-                            Local government encourages community participation in upcoming local events to foster unity and cultural pride across villages.
-                        </p>
-                        <a href="https://mediadesaonlineinfo.blogspot.com/2026/07/bupati-klaten-ajak-warga-gayengkan-hari.html" target="_blank" rel="noopener noreferrer" class="text-ai-light dark:text-ai-dark font-medium text-sm inline-flex items-center group/link mt-auto translatable" data-en="Read Original Article" data-id="Baca Artikel Asli">
-                            Read Original Article <i class="fa-solid fa-arrow-right ml-1 transform transition-transform group-hover/link:translate-x-1"></i>
-                        </a>
+                        <div class="text-center md:text-left">
+                            <h4 class="text-amber-400 font-extrabold text-sm md:text-base tracking-widest uppercase font-serif">Cerita Kita Publisher</h4>
+                            <span class="bg-amber-100 text-emerald-900 text-[10px] font-black px-2 py-0.5 rounded-sm uppercase tracking-widest inline-block mt-0.5">Buku Berkualitas</span>
+                        </div>
                     </div>
-                </article>
 
-                <!-- News Item 2 -->
-                <article class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-200 dark:border-dark-border flex flex-col h-full transform hover:-translate-y-1">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3 space-x-4">
-                            <span class="px-2 py-1 bg-ai-light/10 text-ai-light dark:text-ai-dark text-xs font-semibold rounded border border-ai-light/20 translatable" data-en="Economy" data-id="Ekonomi">Economy</span>
-                            <span class="flex items-center"><i class="fa-regular fa-calendar mr-1"></i> <span class="translatable-date" data-date="2026-07-22">July 22, 2026</span></span>
-                            <span class="flex items-center text-green-500"><i class="fa-solid fa-chart-line mr-1"></i> Trending</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-ai-light dark:group-hover:text-ai-dark transition-colors translatable" data-en="Grha Kriya Dekranasda Sleman: A Home for Local Craftsmanship" data-id="Grha Kriya Dekranasda Sleman, Rumah Berkreasi Kerajinan Lokal">
-                            Grha Kriya Dekranasda Sleman: A Home for Local Craftsmanship
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-grow mb-4 translatable" data-en="The new Grha Kriya Dekranasda in Sleman serves as a hub for local artisans to showcase, develop, and market their creative crafts to a broader audience." data-id="Grha Kriya Dekranasda di Sleman menjadi pusat bagi pengrajin lokal untuk memamerkan, mengembangkan, dan memasarkan hasil kerajinan kreatif mereka ke khalayak yang lebih luas.">
-                            The new Grha Kriya Dekranasda in Sleman serves as a hub for local artisans to showcase, develop, and market their creative crafts to a broader audience.
+                    <!-- Middle: Text Content -->
+                    <div class="text-center md:text-left flex-1 md:px-4 mb-3 md:mb-0">
+                        <h2 class="text-white font-black text-lg md:text-2xl uppercase tracking-wide leading-tight group-hover:text-amber-300 transition duration-300">
+                            Buku Inspiratif <span class="text-amber-400 font-light hidden md:inline">|</span> <span class="text-amber-100 font-serif">Generasi Hebat</span>
+                        </h2>
+                        <p class="text-emerald-100/90 text-xs mt-1 hidden md:block font-medium">
+                            <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px] border-b border-amber-400/50 mr-2">Ilmu &bull; Inspirasi &bull; Aksi</span>
+                            Kumpulan buku dari penulis terbaik untuk masa depan bermakna.
                         </p>
-                        <a href="https://mediadesaonlineinfo.blogspot.com/2026/07/grha-kriya-dekranasda-sleman-rumah.html" target="_blank" rel="noopener noreferrer" class="text-ai-light dark:text-ai-dark font-medium text-sm inline-flex items-center group/link mt-auto translatable" data-en="Read Original Article" data-id="Baca Artikel Asli">
-                            Read Original Article <i class="fa-solid fa-arrow-right ml-1 transform transition-transform group-hover/link:translate-x-1"></i>
-                        </a>
                     </div>
-                </article>
 
-                <!-- News Item 3 -->
-                <article class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-200 dark:border-dark-border flex flex-col h-full transform hover:-translate-y-1">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3 space-x-4">
-                            <span class="px-2 py-1 bg-ai-light/10 text-ai-light dark:text-ai-dark text-xs font-semibold rounded border border-ai-light/20 translatable" data-en="MSMEs" data-id="UMKM">UMKM</span>
-                            <span class="flex items-center"><i class="fa-regular fa-calendar mr-1"></i> <span class="translatable-date" data-date="2026-06-15">June 15, 2026</span></span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-ai-light dark:group-hover:text-ai-dark transition-colors translatable" data-en="Rumah Kreatif Sleman Hosts Business Matching" data-id="Rumah Kreatif Sleman Gelar Business Matching">
-                            Rumah Kreatif Sleman Hosts Business Matching
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-grow mb-4 translatable" data-en="Rumah Kreatif Sleman facilitates business matching to connect local entrepreneurs with potential investors and market partners." data-id="Rumah Kreatif Sleman memfasilitasi business matching untuk menghubungkan pengusaha lokal dengan calon investor dan mitra pasar.">
-                            Rumah Kreatif Sleman facilitates business matching to connect local entrepreneurs with potential investors and market partners.
-                        </p>
-                        <a href="https://mediadesaonlineinfo.blogspot.com/2026/06/rumah-kreatif-sleman-gelar-business.html" target="_blank" rel="noopener noreferrer" class="text-ai-light dark:text-ai-dark font-medium text-sm inline-flex items-center group/link mt-auto translatable" data-en="Read Original Article" data-id="Baca Artikel Asli">
-                            Read Original Article <i class="fa-solid fa-arrow-right ml-1 transform transition-transform group-hover/link:translate-x-1"></i>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- News Item 4 (Added) -->
-                <article class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-200 dark:border-dark-border flex flex-col h-full transform hover:-translate-y-1">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3 space-x-4">
-                            <span class="px-2 py-1 bg-ai-light/10 text-ai-light dark:text-ai-dark text-xs font-semibold rounded border border-ai-light/20 translatable" data-en="Community" data-id="Komunitas">Community</span>
-                            <span class="flex items-center"><i class="fa-regular fa-calendar mr-1"></i> <span class="translatable-date" data-date="2026-06-10">June 10, 2026</span></span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-ai-light dark:group-hover:text-ai-dark transition-colors translatable" data-en="Firman Ardiyanto Officially Elected" data-id="Firman Ardiyanto Resmi Terpilih">
-                            Firman Ardiyanto Officially Elected
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-grow mb-4 translatable" data-en="Firman Ardiyanto has been officially confirmed for the leadership position, marking a new chapter for the community." data-id="Firman Ardiyanto telah secara resmi dikukuhkan untuk posisi kepemimpinan, menandai babak baru bagi komunitas.">
-                            Firman Ardiyanto has been officially confirmed for the leadership position, marking a new chapter for the community.
-                        </p>
-                        <a href="https://mediadesaonlineinfo.blogspot.com/2026/06/firman-ardiyanto-resmi-terpilih-sebagai.html" target="_blank" rel="noopener noreferrer" class="text-ai-light dark:text-ai-dark font-medium text-sm inline-flex items-center group/link mt-auto translatable" data-en="Read Original Article" data-id="Baca Artikel Asli">
-                            Read Original Article <i class="fa-solid fa-arrow-right ml-1 transform transition-transform group-hover/link:translate-x-1"></i>
-                        </a>
-                    </div>
-                </article>
-            </div>
-            
-            <div class="text-center mt-12">
-                <a href="https://mediadesaonlineinfo.blogspot.com/" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 bg-transparent border-2 border-ai-light/50 text-ai-light dark:text-ai-dark rounded-xl font-semibold hover:bg-ai-light/10 transition-colors focus:outline-none focus:ring-2 focus:ring-ai-light focus:ring-offset-2 dark:focus:ring-offset-dark-bg translatable" data-en="Load More Data" data-id="Muat Lebih Banyak Data">
-                    Load More Data
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 relative overflow-hidden">
-        <!-- Background elements for contrast -->
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-100 dark:to-dark-card/50 -z-10"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-sm font-bold text-ai-accent tracking-wide uppercase mb-2 translatable" data-en="Testimonials" data-id="Testimoni">Testimonials</h2>
-                <p class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white translatable" data-en="What People Say" data-id="Apa Kata Mereka">What People Say</p>
-            </div>
-
-            <!-- Testimonials Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Testimonial 1 -->
-                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <img src="https://ui-avatars.com/api/?name=Budi+Santoso&background=4f46e5&color=fff" alt="Budi Santoso" class="w-16 h-16 rounded-full mb-4 border-2 border-ai-light shadow-lg">
-                    <p class="text-gray-600 dark:text-gray-400 italic mb-4">"Media Desa provides incredible insights for our local community growth."</p>
-                    <h4 class="font-bold">Budi Santoso</h4>
-                </div>
-
-                <!-- Testimonial 2 -->
-                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <img src="https://ui-avatars.com/api/?name=Siti+Aminah&background=06b6d4&color=fff" alt="Siti Aminah" class="w-16 h-16 rounded-full mb-4 border-2 border-ai-accent shadow-lg">
-                    <p class="text-gray-600 dark:text-gray-400 italic mb-4">"The AI-driven reports have really helped our SME digital transformation."</p>
-                    <h4 class="font-bold">Siti Aminah</h4>
-                </div>
-
-                <!-- Testimonial 3 -->
-                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <img src="https://ui-avatars.com/api/?name=Andi+Wijaya&background=8b5cf6&color=fff" alt="Andi Wijaya" class="w-16 h-16 rounded-full mb-4 border-2 border-purple-500 shadow-lg">
-                    <p class="text-gray-600 dark:text-gray-400 italic mb-4">"Connecting rural potential with modern technology is brilliant."</p>
-                    <h4 class="font-bold">Andi Wijaya</h4>
-                </div>
-
-                <!-- Testimonial 4 -->
-                <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <img src="https://ui-avatars.com/api/?name=Dewi+Lestari&background=ec4899&color=fff" alt="Dewi Lestari" class="w-16 h-16 rounded-full mb-4 border-2 border-pink-500 shadow-lg">
-                    <p class="text-gray-600 dark:text-gray-400 italic mb-4">"Excellent platform for sharing village news and cultural updates."</p>
-                    <h4 class="font-bold">Dewi Lestari</h4>
-                </div>
-            </div>
-
-            <!-- Feature spotlight -->
-            <div class="mt-16 bg-gradient-to-br from-dark-card to-dark-bg rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-700 relative overflow-hidden">
-                <!-- Decorative AI ring -->
-                <div class="absolute -right-20 -top-20 w-64 h-64 border-[30px] border-ai-light/10 rounded-full"></div>
-                <div class="absolute -right-10 -top-10 w-48 h-48 border-[20px] border-ai-accent/10 rounded-full"></div>
-
-                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-ai-light/20 border border-ai-light/30 mb-6">
-                            <i class="fa-solid fa-wand-magic-sparkles text-ai-light text-sm"></i>
-                            <span class="text-xs font-bold text-ai-light uppercase tracking-wider translatable" data-en="AI Feature" data-id="Fitur AI">AI Feature</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-white mb-4 translatable" data-en="Smart Village Analytics Generator" data-id="Generator Analitik Desa Pintar">Smart Village Analytics Generator</h3>
-                        <p class="text-gray-300 mb-6 translatable" data-en="Input local data and our AI model generates comprehensive reports on potential growth areas, resource allocation, and market trends specific to rural demographics." data-id="Masukkan data lokal dan model AI kami menghasilkan laporan komprehensif tentang area pertumbuhan potensial, alokasi sumber daya, dan tren pasar khusus untuk demografi pedesaan.">
-                            Input local data and our AI model generates comprehensive reports on potential growth areas, resource allocation, and market trends specific to rural demographics.
-                        </p>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-gray-300">
-                                <i class="fa-solid fa-check text-green-400 mr-3"></i> <span class="translatable" data-en="Predictive yield modeling" data-id="Pemodelan hasil prediktif">Predictive yield modeling</span>
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <i class="fa-solid fa-check text-green-400 mr-3"></i> <span class="translatable" data-en="Automated demographic reports" data-id="Laporan demografi otomatis">Automated demographic reports</span>
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                        <p class="text-gray-300 mb-6 translatable" data-en="Discover our latest digital initiatives and community-driven platforms." data-id="Temukan inisiatif digital terbaru kami dan platform berbasis komunitas.">
-                            Discover our latest digital initiatives and community-driven platforms.
-                        </p>
-                        <a href="https://sumberejoberubag2027-tech.github.io/PILKADES-DIGITAL/#beranda" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 bg-ai-light hover:bg-indigo-500 text-white rounded-xl font-semibold shadow-lg shadow-ai-light/30 transition-all focus:outline-none focus:ring-2 focus:ring-white translatable" data-en="Access Portal" data-id="Akses Portal">
-                            Access Portal <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                    
-                    <!-- Mockup visualization -->
-                    <div class="relative rounded-xl overflow-hidden border border-gray-700 shadow-2xl bg-dark-bg/80 backdrop-blur-sm h-64 md:h-80 flex items-center justify-center group">
-                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMTBoNDBWMHgtNDB2MTB6bTAgMjBoNDBWMTBIMHZhMHptMCAyMGg0MFYyMEgwdjIweiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIvPgo8L3N2Zz4=')] opacity-50"></div>
-                        
-                        <!-- Animated Graph Mockup -->
-                        <div class="w-3/4 h-1/2 flex items-end justify-between space-x-2 relative z-10">
-                            <div class="w-1/6 bg-blue-500/80 rounded-t-sm h-[30%] group-hover:h-[40%] transition-all duration-500 ease-in-out"></div>
-                            <div class="w-1/6 bg-ai-accent/80 rounded-t-sm h-[50%] group-hover:h-[60%] transition-all duration-500 ease-in-out delay-75"></div>
-                            <div class="w-1/6 bg-purple-500/80 rounded-t-sm h-[40%] group-hover:h-[80%] transition-all duration-500 ease-in-out delay-150 ai-glow"></div>
-                            <div class="w-1/6 bg-ai-light/80 rounded-t-sm h-[70%] group-hover:h-[90%] transition-all duration-500 ease-in-out delay-200"></div>
-                            <div class="w-1/6 bg-pink-500/80 rounded-t-sm h-[60%] group-hover:h-[75%] transition-all duration-500 ease-in-out delay-300"></div>
-                        </div>
-                        
-                        <div class="absolute top-4 left-4 right-4 flex justify-between">
-                            <div class="h-3 w-20 bg-gray-700 rounded-full"></div>
-                            <div class="flex space-x-2">
-                                <div class="h-3 w-3 rounded-full bg-red-500"></div>
-                                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-                                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+                    <!-- Right: CTA Button -->
+                    <div class="md:px-6 w-full md:w-auto">
+                        <div class="flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-extrabold py-2 px-5 rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.4)] transition transform group-hover:scale-105 border border-green-400/50">
+                            <i class="fab fa-whatsapp text-2xl drop-shadow-md"></i>
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] uppercase tracking-wider text-green-100">Pesan Sekarang</span>
+                                <span class="block text-base tracking-wide drop-shadow-md">08551236277</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
+            <!-- Decorative Accent -->
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"></div>
         </div>
-    </section>
 
-    <!-- About / Contact Section -->
-    <section id="about" class="py-20 border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-bg transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div>
-                    <div class="flex items-center mb-6">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-ai-light to-ai-accent flex items-center justify-center mr-3">
-                            <i class="fa-solid fa-network-wired text-white text-sm"></i>
-                        </div>
-                        <span class="font-bold text-2xl text-gray-900 dark:text-white">Media Desa</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md translatable" data-en="Originally a local blog, now evolved into a modern platform leveraging AI to bridge the digital divide and showcase the true potential of rural communities to the world." data-id="Awalnya sebuah blog lokal, kini berevolusi menjadi platform modern yang memanfaatkan AI untuk menjembatani kesenjangan digital dan memamerkan potensi sebenarnya dari masyarakat pedesaan kepada dunia.">
-                        Originally a local blog, now evolved into a modern platform leveraging AI to bridge the digital divide and showcase the true potential of rural communities to the world.
-                    </p>
-                    
-                    <div class="flex space-x-4 mb-8">
-                        <a href="https://www.instagram.com/mediadesaonline/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-pink-600 hover:text-white transition-colors" aria-label="Instagram">
-                            <i class="fa-brands fa-instagram text-lg"></i>
-                        </a>
-                        <a href="https://www.facebook.com/latif.mediadesa" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white transition-colors" aria-label="Facebook">
-                            <i class="fa-brands fa-facebook text-lg"></i>
-                        </a>
-                        <a href="https://wa.me/6285878976277" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-green-600 hover:text-white transition-colors" aria-label="WhatsApp">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                        </a>
-                        <a href="mailto:mediadesaonline@gmail.com" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-card flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-red-600 hover:text-white transition-colors" aria-label="Email">
-                            <i class="fa-solid fa-envelope text-lg"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
-                        <p><i class="fa-solid fa-location-dot mr-2 text-ai-light"></i> Sleman, D.I. Yogyakarta</p>
-                    </div>
-
-                </div>
+        <div class="flex flex-col lg:flex-row gap-6">
+            
+            <!-- Left Column: Main Content (Headlines & Latest) -->
+            <div class="w-full lg:w-2/3">
                 
-                <div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 translatable" data-en="Join the Network" data-id="Bergabung dengan Jaringan">Join the Network</h3>
-                    <form class="space-y-4" onsubmit="event.preventDefault();">
-                        <div>
-                            <label for="email" class="sr-only">Email</label>
-                            <input type="email" id="email" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white focus:ring-2 focus:ring-ai-light focus:border-transparent outline-none transition-all placeholder-gray-400" placeholder="Enter your email address" data-placeholder-id="Masukkan alamat email Anda" data-placeholder-en="Enter your email address">
+                <!-- Headline Section -->
+                <a href="https://mediadesaonlineinfo.blogspot.com/2026/08/wali-kota-yogyakarta-hasto-wardoyo.html" target="_blank" class="block mb-8 relative group cursor-pointer rounded-lg overflow-hidden shadow-md">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Hasto_Wardoyo_BKKBN.jpg" alt="Wali Kota Yogyakarta Hasto Wardoyo" class="w-full h-[400px] object-cover transition duration-500 group-hover:scale-105 object-top">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6 text-white w-full">
+                        <span data-i18n="nav_regional_news" class="bg-brand-red text-white text-xs font-bold px-2 py-1 uppercase mb-3 inline-block rounded hover:bg-red-800 transition">Berita Daerah</span>
+                        <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-2 group-hover:text-blue-200 transition">Wali Kota Yogyakarta Hasto Wardoyo Perkuat Akses Pendidikan Kerakyatan & Beasiswa Generasi Muda</h2>
+                        <p class="text-gray-300 text-sm hidden md:block mb-2">Wali Kota Yogyakarta Dr. Hasto Wardoyo menegaskan komitmen Pemkot Yogyakarta untuk memastikan seluruh warga memperoleh akses pendidikan yang berkualitas, serta menanamkan karakter kepemimpinan berbasis nilai kerakyatan sejak dini...</p>
+                        <div class="text-xs text-gray-400 font-medium">Baru Saja &bull; Kota Yogyakarta</div>
+                    </div>
+                </a>
+
+                <!-- Sub Headlines Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Sub Headline 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="overflow-hidden rounded-lg mb-3">
+                            <img src="https://picsum.photos/400/250?random=15" alt="News" class="w-full h-48 object-cover transition duration-300 group-hover:scale-110">
                         </div>
-                        <div>
-                            <label for="message" class="sr-only">Message</label>
-                            <textarea id="message" rows="3" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white focus:ring-2 focus:ring-ai-light focus:border-transparent outline-none transition-all placeholder-gray-400 resize-none" placeholder="How can we collaborate?" data-placeholder-id="Bagaimana kita bisa berkolaborasi?" data-placeholder-en="How can we collaborate?"></textarea>
+                        <h3 class="font-bold text-lg leading-snug mb-1 text-gray-900 dark:text-gray-100 group-hover:text-brand-red dark:group-hover:text-red-400 transition line-clamp-2">5 Prodi Pilihan Beasiswa Pemkab Klaten: Dari Psikologi, Akuntansi, hingga Teknik Elektro</h3>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">15 Menit yang lalu &bull; Info Kampus</div>
+                    </div>
+                    <!-- Sub Headline 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="overflow-hidden rounded-lg mb-3">
+                            <img src="https://picsum.photos/400/250?random=3" alt="News" class="w-full h-48 object-cover transition duration-300 group-hover:scale-110">
                         </div>
-                        <button type="submit" class="w-full py-3 px-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-semibold hover:bg-ai-light dark:hover:bg-ai-light dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 dark:focus:ring-offset-dark-bg translatable" data-en="Initialize Connection" data-id="Inisialisasi Koneksi">
-                            Initialize Connection <i class="fa-solid fa-terminal ml-2 text-xs"></i>
-                        </button>
-                    </form>
+                        <h3 class="font-bold text-lg leading-snug mb-1 text-gray-900 dark:text-gray-100 group-hover:text-brand-red dark:group-hover:text-red-400 transition line-clamp-2">Teknologi Panel Surya Kini Terangi Ratusan Rumah di Pelosok Kalimantan Tengah</h3>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">3 Jam yang lalu &bull; Inovasi</div>
+                    </div>
                 </div>
+
+                <hr class="border-gray-200 dark:border-slate-800 mb-6">
+
+                <!-- Latest News (Berita Terbaru) -->
+                <div class="mb-6 flex justify-between items-end">
+                    <h2 data-i18n="latest_news" class="text-2xl font-black text-brand-dark dark:text-white border-l-4 border-brand-red pl-3 uppercase">Berita Terbaru</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex gap-4 group cursor-pointer">
+                        <div class="w-1/3 flex-shrink-0 overflow-hidden rounded">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEih6gXN0fmWeZlSt17mJckfpY16QguvX2Lehhamt6TMyQEv0qCIxn3ilD2XXXEyNCQd9KmUeutjFdUEL5_vmbBYdbFtYgQ_0ukDsGsjNVLVfrCCsRm_jaBXdWrto_Mz_HHCKevK8iHbq61PkbEIQtEdL1DynhVo1mwsOAejldb-XZSk-h34QyHQZgF6Ufv5/w400-h300/1000330044.jpg" class="w-full h-24 md:h-32 object-cover group-hover:scale-105 transition duration-300" alt="Bupati Klaten">
+                        </div>
+                        <div class="w-2/3 flex flex-col justify-center">
+                            <span data-i18n="nav_regional_news" class="text-brand-red font-bold text-xs uppercase mb-1">Berita Daerah</span>
+                            <h3 class="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-brand-red transition line-clamp-2 mb-1">Bupati Ajak Warga Gayengkan Rangkaian Hari Jadi ke-222 Kabupaten Klaten</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm hidden md:block line-clamp-2">Menjelang puncak peringatan, Bupati Klaten mengajak seluruh masyarakat untuk meramaikan serangkaian acara mulai dari Klaten Fair hingga Klaten Lurik Carnival.</p>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 mt-2">Baru Saja</span>
+                        </div>
+                    </div>
+
+                    <!-- News List Item -->
+                    <div class="flex gap-4 group cursor-pointer">
+                        <div class="w-1/3 flex-shrink-0 overflow-hidden rounded">
+                            <img src="https://picsum.photos/300/200?random=7" class="w-full h-24 md:h-32 object-cover group-hover:scale-105 transition duration-300" alt="Jembatan Gantung">
+                        </div>
+                        <div class="w-2/3 flex flex-col justify-center">
+                            <span class="text-brand-red font-bold text-xs uppercase mb-1">Infrastruktur</span>
+                            <h3 class="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-brand-red transition line-clamp-2 mb-1">Peresmian Jembatan Gantung Mudahkan Akses Siswa Desa Terpencil di NTT</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm hidden md:block line-clamp-2">Kini anak-anak tidak perlu lagi menantang bahaya menyeberangi sungai deras untuk pergi ke sekolah.</p>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 mt-2">3 Jam yang lalu</span>
+                        </div>
+                    </div>
+
+                    <!-- Load More Button with Link to Blogspot -->
+                    <a href="https://mediadesaonlineinfo.blogspot.com/" target="_blank" data-i18n="more_news" class="block w-full text-center py-3 mt-4 border border-brand-red text-brand-red font-bold rounded hover:bg-brand-red hover:text-white transition uppercase text-sm tracking-wider">
+                        Indeks Berita Lainnya
+                    </a>
+                </div>
+
             </div>
+
+            <!-- Right Column: Sidebar (Terpopuler, Ads, dll) -->
+            <aside class="w-full lg:w-1/3 mt-8 lg:mt-0">
+                
+                <!-- Terpopuler Section -->
+                <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg shadow-sm p-5 mb-8 transition-colors duration-300">
+                    <div class="flex items-center justify-between mb-5 border-b border-gray-200 dark:border-slate-800 pb-2">
+                        <h2 data-i18n="popular" class="text-xl font-black text-brand-dark dark:text-white uppercase">Terpopuler</h2>
+                        <i class="fas fa-fire text-brand-red text-xl"></i>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Populer Item 1 -->
+                        <div class="flex items-start popular-item group cursor-pointer">
+                            <div class="number-bullet">1</div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-brand-red transition line-clamp-2">Viral Kades Lulusan S2 Pulang Kampung Bangun Sistem Digitalisasi Desa</h3>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Dibaca 15.420 kali</span>
+                            </div>
+                        </div>
+                        <hr class="border-gray-100 dark:border-slate-800">
+                        
+                        <!-- Populer Item 2 -->
+                        <div class="flex items-start popular-item group cursor-pointer">
+                            <div class="number-bullet">2</div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-brand-red transition line-clamp-2">Syarat & Cara Pengajuan Modal BUMDes Terbaru Tahun 2026, Wajib Tahu!</h3>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Dibaca 12.100 kali</span>
+                            </div>
+                        </div>
+                        <hr class="border-gray-100 dark:border-slate-800">
+
+                        <!-- Populer Item 3 -->
+                        <div class="flex items-start popular-item group cursor-pointer">
+                            <div class="number-bullet">3</div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-brand-red transition line-clamp-2">Harga Gabah Anjlok, Ratusan Petani Gelar Aksi Damai di Depan Kantor Bupati</h3>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Dibaca 9.850 kali</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Iklan Katalog Buku Digital (Cerita Kita Publisher) -->
+                <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 border-2 border-amber-400 rounded-xl shadow-lg p-4 mb-8 text-white relative overflow-hidden group">
+                    <div class="absolute -right-6 -top-6 bg-amber-400 text-slate-950 font-black text-[10px] px-8 py-2 rotate-45 shadow-md uppercase tracking-wider">
+                        SPONSOR
+                    </div>
+                    
+                    <div class="flex items-center justify-between border-b border-blue-800/80 pb-2 mb-3">
+                        <div class="flex items-center space-x-1.5">
+                            <i class="fas fa-book-open text-amber-400 text-xs"></i>
+                            <span class="text-xs font-bold tracking-wide text-amber-300 uppercase">Cerita Kita Publisher</span>
+                        </div>
+                        <span class="text-[9px] bg-blue-600/60 text-blue-200 px-2 py-0.5 rounded-full font-semibold">PT WEB DIGITAL</span>
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <span class="inline-block bg-amber-400 text-slate-900 font-extrabold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider mb-1">Panduan Lengkap Pemula</span>
+                        <h3 class="text-base font-black leading-tight text-white group-hover:text-amber-300 transition">
+                            Jualan Online Maksimal & Katalog Buku Digital
+                        </h3>
+                        <p class="text-xs text-slate-300 mt-1 line-clamp-2">
+                            Solusi praktis & step by step kuasai Instagram, FB, TikTok, WA & Aplikasi Web AI!
+                        </p>
+                    </div>
+
+                    <!-- Book Catalog Quick List -->
+                    <div class="space-y-1.5 mb-4 text-xs bg-slate-800/70 p-2.5 rounded-lg border border-slate-700/60">
+                        <div class="flex items-center justify-between text-slate-200">
+                            <span class="flex items-center gap-1.5 truncate"><i class="fas fa-check-circle text-amber-400 text-xs"></i> Website / Toko Blogspot</span>
+                            <span class="font-bold text-amber-300 text-[11px] shrink-0">Rp 129rb</span>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-200">
+                            <span class="flex items-center gap-1.5 truncate"><i class="fas fa-check-circle text-amber-400 text-xs"></i> Konten Kreator Pemula</span>
+                            <span class="font-bold text-amber-300 text-[11px] shrink-0">Rp 149rb</span>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-200">
+                            <span class="flex items-center gap-1.5 truncate"><i class="fas fa-check-circle text-amber-400 text-xs"></i> Aplikasi Website AI</span>
+                            <span class="font-bold text-amber-300 text-[11px] shrink-0">Rp 179rb</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Order Button -->
+                    <a href="https://api.whatsapp.com/send/?phone=628551236277&text=Halo%20Cerita%20Kita%20Publisher,%20saya%20tertarik%20dengan%20Katalog%20Buku%20Digital" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-extrabold py-2.5 px-3 rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 text-xs uppercase tracking-wide">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                        <span>Order Via WA: 08551236277</span>
+                    </a>
+                </div>
+
+                <!-- 6 Testimoni Tokoh -->
+                <div class="mb-8 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg p-4 shadow-sm transition-colors duration-300">
+                    <div class="flex items-center justify-between border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                        <h2 class="text-lg font-black text-brand-dark dark:text-white border-l-4 border-brand-red pl-3 uppercase">6 Testimoni Tokoh</h2>
+                        <i class="fas fa-quote-right text-brand-red text-lg"></i>
+                    </div>
+
+                    <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                        <!-- Testimoni 1: Prof Amien Rais -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-red-100 dark:bg-red-950 text-brand-red font-extrabold flex items-center justify-center text-xs shrink-0 border border-red-200">
+                                    AR
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Prof. Dr. H. Amien Rais, M.A.</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Tokoh Bangsa & Cendekiawan</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Media Desa Online menjadi pilar penting menyuarakan aspirasi masyarakat akar rumput secara bermartabat dan objektif."
+                            </p>
+                        </div>
+
+                        <!-- Testimoni 2: Mahfud MD -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 font-extrabold flex items-center justify-center text-xs shrink-0 border border-blue-200">
+                                    MM
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Prof. Dr. H. Mohammad Mahfud MD</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Pakar Hukum & Tokoh Nasional</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Edukasi hukum dan tata kelola transparansi desa yang disajikan sangat mencerahkan warga."
+                            </p>
+                        </div>
+
+                        <!-- Testimoni 3: Zainal Arifin Mochtar -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 font-extrabold flex items-center justify-center text-xs shrink-0 border border-emerald-200">
+                                    ZA
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Dr. Zainal Arifin Mochtar, S.H.</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Pakar Hukum Tata Negara UGM</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Pengawasan publik dan jurnalisme lokal independen adalah kunci kemajuan pembangunan pemerintahan desa."
+                            </p>
+                        </div>
+
+                        <!-- Testimoni 4: Sri Sultan HB X -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 font-extrabold flex items-center justify-center text-xs shrink-0 border border-amber-200">
+                                    HB
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Sri Sultan Hamengku Buwono X</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Gubernur D.I. Yogyakarta</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Jembatan informasi yang memperkuat kearifan lokal dan ekonomi kemasyarakatan di Kalurahan D.I. Yogyakarta."
+                            </p>
+                        </div>
+
+                        <!-- Testimoni 5: Dr. Hasto Wardoyo -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-600 font-extrabold flex items-center justify-center text-xs shrink-0 border border-purple-200">
+                                    HW
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Dr. H. Hasto Wardoyo, Sp.OG(K)</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Wali Kota Yogyakarta</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Menghubungkan program pendidikan, kesehatan, dan pemberdayaan generasi muda hingga ke pelosok."
+                            </p>
+                        </div>
+
+                        <!-- Testimoni 6: Najwa Shihab -->
+                        <div class="bg-gray-50 dark:bg-slate-800/60 p-3 rounded-lg border border-gray-100 dark:border-slate-700/50">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-pink-100 dark:bg-pink-950 text-pink-600 font-extrabold flex items-center justify-center text-xs shrink-0 border border-pink-200">
+                                    NS
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Najwa Shihab</h4>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400">Jurnalis & Pendiri Narasi</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">
+                                "Membuktikan bahwa cerita dan suara dari desa memiliki daya dorong nasional yang sangat besar."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Widget -->
+                <div class="bg-gray-50 dark:bg-slate-900 p-4 border border-gray-200 dark:border-slate-800 rounded text-center transition-colors duration-300">
+                    <h3 data-i18n="follow_us" class="font-bold text-gray-700 dark:text-gray-200 mb-3">Ikuti MediaDesaOnline</h3>
+                    <div class="flex justify-center space-x-4 mb-4">
+                        <a href="https://www.facebook.com/latif.mediadesa" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/mediadesaonline/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center hover:bg-pink-700 transition" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@mediadesaonline2024" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <a href="https://maps.app.goo.gl/53sfRYLKCH7uW9Gv9" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center space-x-2 text-xs font-bold text-brand-red border border-brand-red bg-red-50 dark:bg-slate-800 hover:bg-brand-red hover:text-white px-3 py-2 rounded transition w-full">
+                        <i class="fas fa-map-marked-alt text-base"></i>
+                        <span data-i18n="office_location">Lokasi Kantor Redaksi (Google Maps)</span>
+                    </a>
+                </div>
+
+            </aside>
         </div>
-    </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="py-6 border-t border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg text-center mt-auto">
-        <p class="text-gray-500 dark:text-gray-500 text-sm">
-            &copy; <span id="currentYear"></span> Media Desa. <span class="translatable" data-en="Transformed with AI. All rights reserved." data-id="Diformat dengan AI. Seluruh hak cipta.">Transformed with AI. All rights reserved.</span>
-        </p>
+    <footer class="bg-brand-dark text-white mt-12 border-t-4 border-brand-red">
+        <div class="max-w-7xl mx-auto px-4 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Col 1: Logo & Info -->
+                <div class="md:col-span-1">
+                    <h1 class="text-2xl font-extrabold tracking-tighter italic mb-0.5">
+                        MEDIA<span class="text-brand-red">DESA</span>ONLINE
+                    </h1>
+                    <p class="text-brand-red text-xs font-bold uppercase tracking-wider mb-3">
+                        Berita News DIY & Sekitarnya
+                    </p>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Portal berita independen yang fokus menyajikan informasi terbaru dan terpercaya seputar pembangunan desa, BUMDes, pertanian, dan kearifan lokal di wilayah <a href="https://maps.google.com/?cid=7862038871109317616&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="text-brand-red hover:text-white hover:underline transition">Daerah Istimewa Yogyakarta</a> dan sekitarnya.
+                    </p>
+                    <p class="text-gray-400 text-sm font-semibold">
+                        "Membangun Indonesia dari Desa"
+                    </p>
+                </div>
+
+                <!-- Col 2: Kategori -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 uppercase border-b border-gray-700 pb-2">Kategori</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-brand-red transition">Kabar Desa</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Pemerintahan</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">BUMDes & UMKM</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Desa Wisata</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Inovasi Pertanian</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Sosial Budaya</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Layanan -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 uppercase border-b border-gray-700 pb-2">Layanan Kami</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="https://api.whatsapp.com/send/?phone=628551236277&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition flex items-center gap-1.5"><i class="fab fa-whatsapp text-green-500 text-xs"></i> Pasang Iklan</a></li>
+                        <li><a href="mailto:mediadesaaonline@gmail.com" class="hover:text-brand-red transition flex items-center gap-1.5"><i class="fas fa-envelope text-brand-red text-xs"></i> Kirim Tulisan Opini</a></li>
+                        <li><a href="https://latifsafruddin.github.io/privatwebsite-AI/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition flex items-center gap-1.5"><i class="fas fa-graduation-cap text-amber-400 text-xs"></i> Info Pelatihan</a></li>
+                        <li><a href="https://lynk.id/latifsafruddin" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition flex items-center gap-1.5"><i class="fas fa-laptop-code text-blue-400 text-xs"></i> Jasa buat Website AI & Aplikasi</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Jaringan & Bantuan -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 uppercase border-b border-gray-700 pb-2">Jaringan & Bantuan</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-brand-red transition">Tentang MediaDesaOnline</a></li>
+                        <li><a href="http://mediadesaonlineinfo.blogspot.com/2023/08/redaksi-media-desa-online.html" target="_blank" class="hover:text-brand-red transition">Redaksi</a></li>
+                        <li><a href="https://maps.app.goo.gl/53sfRYLKCH7uW9Gv9" target="_blank" rel="noopener noreferrer" class="text-white hover:text-brand-red transition flex items-center space-x-2 font-semibold"><i class="fas fa-map-marker-alt text-brand-red"></i> <span>Alamat Kantor (Google Maps)</span></a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Pedoman Media Siber</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Disclaimer</a></li>
+                        <li><a href="#" class="hover:text-brand-red transition">Kebijakan Privasi</a></li>
+                        <li><a href="https://api.whatsapp.com/send/?phone=628551236277&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition inline-flex items-center"><i class="fab fa-whatsapp text-green-500 mr-1.5 text-base"></i> Hubungi Kami</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-10 pt-6 border-t border-gray-800 text-center flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-xs mb-4 md:mb-0">
+                    &copy; 2026 PT Media Desa Online Nusantara. Hak Cipta Dilindungi Undang-Undang.
+                </p>
+                <div class="flex space-x-4 text-gray-400 text-lg">
+                    <a href="https://www.facebook.com/latif.mediadesa" target="_blank" rel="noopener noreferrer" class="hover:text-white" title="Facebook"><i class="fab fa-facebook-square"></i></a>
+                    <a href="https://www.instagram.com/mediadesaonline/" target="_blank" rel="noopener noreferrer" class="hover:text-white" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@mediadesaonline2024" target="_blank" rel="noopener noreferrer" class="hover:text-white" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <!-- Back to top button -->
-    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-ai-light text-white rounded-full shadow-lg opacity-0 pointer-events-none transform translate-y-4 transition-all duration-300 hover:bg-ai-dark hover:-translate-y-1 focus:outline-none z-50 flex items-center justify-center" aria-label="Back to top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send/?phone=628551236277&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white p-3.5 rounded-full shadow-lg transition flex items-center justify-center z-50 group" title="Hubungi Kami via WhatsApp">
+        <i class="fab fa-whatsapp text-2xl"></i>
+        <span data-i18n="contact_us" class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold pl-0 group-hover:pl-2">Hubungi Kami</span>
+    </a>
 
+    <!-- Scripts -->
     <script>
-        // --- State Management ---
-        const state = {
-            lang: 'en', // 'en' or 'id'
-            theme: 'light' // 'light' or 'dark'
+        // Dark/Light Mode Switcher Logic
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                updateThemeIcon(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeIcon(false);
+            }
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateThemeIcon(false);
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateThemeIcon(true);
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                if (isDark) {
+                    icon.className = 'fas fa-sun text-amber-400 text-xs';
+                } else {
+                    icon.className = 'fas fa-moon text-amber-300 text-xs';
+                }
+            }
+        }
+
+        // Multi-language Logic (ID = Indonesia, JV = Jawa, EN = English)
+        const i18n = {
+            id: {
+                about: "Tentang Kami",
+                editorial: "Redaksi",
+                cyber_guidelines: "Pedoman Media Siber",
+                trending: "Trending:",
+                tagline: "Berita News DIY & Sekitarnya",
+                search_placeholder: "Cari berita desa...",
+                login: "Masuk",
+                nav_village_news: "Berita Desa",
+                nav_diy_news: "Berita DIY & Sekitarnya",
+                nav_regional_news: "Berita Daerah",
+                nav_national_news: "Berita Nasional",
+                nav_culture_news: "Berita Budaya",
+                nav_umkm_news: "Berita UMKM",
+                nav_edu_news: "Berita Pendidikan",
+                nav_opinion: "Gagasan",
+                latest_news: "Berita Terbaru",
+                popular: "Terpopuler",
+                more_news: "Indeks Berita Lainnya",
+                gallery: "Galeri & Infografis",
+                follow_us: "Ikuti MediaDesaOnline",
+                office_location: "Lokasi Kantor Redaksi (Google Maps)",
+                contact_us: "Hubungi Kami",
+                service_publishing: "Penerbitan & Katalog Buku"
+            },
+            jv: {
+                about: "Babagan Kita",
+                editorial: "Redaksi",
+                cyber_guidelines: "Pedoman Media Siber",
+                trending: "Gumedhan:",
+                tagline: "Pawarta News DIY lan Sakiwatengenipun",
+                search_placeholder: "Pados pawarta desa...",
+                login: "Mlebet",
+                nav_village_news: "Pawarta Desa",
+                nav_diy_news: "Pawarta DIY & Sakiwatengenipun",
+                nav_regional_news: "Pawarta Daerah",
+                nav_national_news: "Pawarta Nasional",
+                nav_culture_news: "Pawarta Budaya",
+                nav_umkm_news: "Pawarta UMKM",
+                nav_edu_news: "Pawarta Pendidikan",
+                nav_opinion: "Gagasan",
+                latest_news: "Pawarta Anyar",
+                popular: "Paling Kondhang",
+                more_news: "Indeks Pawarta Liyane",
+                gallery: "Galeri & Infografis",
+                follow_us: "Tututake MediaDesaOnline",
+                office_location: "Lokasi Kantor Redaksi (Google Maps)",
+                contact_us: "Kirim Pesen / WA",
+                service_publishing: "Penerbitan & Katalog Buku"
+            },
+            en: {
+                about: "About Us",
+                editorial: "Editorial",
+                cyber_guidelines: "Cyber Media Code",
+                trending: "Trending:",
+                tagline: "DIY News & Surroundings",
+                search_placeholder: "Search village news...",
+                login: "Login",
+                nav_village_news: "Village News",
+                nav_diy_news: "DIY & Surroundings News",
+                nav_regional_news: "Regional News",
+                nav_national_news: "National News",
+                nav_culture_news: "Culture News",
+                nav_umkm_news: "MSME News",
+                nav_edu_news: "Education News",
+                nav_opinion: "Opinions",
+                latest_news: "Latest News",
+                popular: "Most Popular",
+                more_news: "More News Index",
+                gallery: "Gallery & Infographics",
+                follow_us: "Follow MediaDesaOnline",
+                office_location: "Editorial Office Location (Google Maps)",
+                contact_us: "Contact Us",
+                service_publishing: "Book Publishing & Catalog"
+            }
         };
 
-        // --- DOM Elements ---
-        const themeToggle = document.getElementById('themeToggle');
-        const langToggle = document.getElementById('langToggle');
-        const currentLangSpan = document.getElementById('currentLang');
-        const htmlElement = document.documentElement;
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const backToTopBtn = document.getElementById('backToTop');
-        const translatableElements = document.querySelectorAll('.translatable');
-        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-        const placeholders = document.querySelectorAll('[data-placeholder-en]');
-        const dateElements = document.querySelectorAll('.translatable-date');
+        let currentLang = localStorage.getItem('app_lang') || 'id';
 
-        // --- Initialization ---
-        function init() {
-            // Set current year
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-            // Check system preference for theme or local storage
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-
-            // Check local storage for language
-            const savedLang = localStorage.getItem('lang');
-            if (savedLang === 'id') {
-                setLanguage('id');
-            } else {
-                setLanguage('en');
-            }
-
-            // Setup Event Listeners
-            setupEventListeners();
-        }
-
-        // --- Functions ---
-
-        // Theme Handling
-        function setTheme(theme) {
-            state.theme = theme;
-            if (theme === 'dark') {
-                htmlElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                htmlElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        // Language Handling
-        function setLanguage(lang) {
-            state.lang = lang;
-            currentLangSpan.textContent = lang.toUpperCase();
-            localStorage.setItem('lang', lang);
-
-            // Translate general text
-            translatableElements.forEach(el => {
-                if (el.dataset[lang]) {
-                    // Check if element has HTML inside (like the button with icon)
-                    if(el.innerHTML.includes('<i')) {
-                        const iconHtml = el.innerHTML.substring(el.innerHTML.indexOf('<i'));
-                        el.innerHTML = el.dataset[lang] + ' ' + iconHtml;
+        function changeLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('app_lang', lang);
+            
+            // Update UI state language buttons
+            ['id', 'jv', 'en'].forEach(l => {
+                const btn = document.getElementById(`btn-lang-${l}`);
+                if (btn) {
+                    if (l === lang) {
+                        btn.className = 'px-1.5 py-0.5 text-[10px] font-bold rounded bg-brand-red text-white transition';
                     } else {
-                        el.textContent = el.dataset[lang];
+                        btn.className = 'px-1.5 py-0.5 text-[10px] font-bold rounded text-gray-300 hover:text-white transition';
                     }
                 }
             });
 
-            // Translate Nav links
-            navLinks.forEach(link => {
-                if(link.dataset[lang]) link.textContent = link.dataset[lang];
-            });
-
-            // Translate Placeholders
-            placeholders.forEach(el => {
-                if(el.dataset[`placeholder-${lang}`]) {
-                    el.placeholder = el.dataset[`placeholder-${lang}`];
-                } else if(el.dataset[`placeholder${lang.charAt(0).toUpperCase() + lang.slice(1)}`]) {
-                     // fallback for dataset camelCase mapping if needed
-                     el.placeholder = el.dataset[`placeholder${lang.charAt(0).toUpperCase() + lang.slice(1)}`];
+            // Translate HTML elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang] && i18n[lang][key]) {
+                    el.textContent = i18n[lang][key];
                 }
             });
 
-            // Translate Dates (Simple formatting for demo)
-            dateElements.forEach(el => {
-                const dateStr = el.dataset.date;
-                const date = new Date(dateStr);
-                const optionsEn = { year: 'numeric', month: 'long', day: 'numeric' };
-                const optionsId = { year: 'numeric', month: 'long', day: 'numeric' };
-                
-                if (lang === 'id') {
-                    // Very basic ID month translation for fallback if Intl not supported fully
-                    const monthsId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                    el.textContent = `${date.getDate()} ${monthsId[date.getMonth()]} ${date.getFullYear()}`;
-                } else {
-                    el.textContent = date.toLocaleDateString('en-US', optionsEn);
+            // Translate placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (i18n[lang] && i18n[lang][key]) {
+                    el.setAttribute('placeholder', i18n[lang][key]);
                 }
             });
+
+            renderDate();
         }
 
-        // Scroll Top Function
-        window.scrollToTop = function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function renderDate() {
+            const dateEl = document.getElementById('current-date');
+            if (!dateEl) return;
+            const now = new Date();
+            let locale = 'id-ID';
+            if (currentLang === 'en') locale = 'en-US';
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = now.toLocaleDateString(locale, options);
         }
 
-        // Setup Event Listeners
-        function setupEventListeners() {
-            // Theme Toggle Click
-            themeToggle.addEventListener('click', () => {
-                setTheme(state.theme === 'light' ? 'dark' : 'light');
-            });
+        // Initialize Theme & Language on load
+        initTheme();
+        changeLang(currentLang);
 
-            // Language Toggle Click
-            langToggle.addEventListener('click', () => {
-                setLanguage(state.lang === 'en' ? 'id' : 'en');
-            });
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
 
-            // Mobile Menu Toggle
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                const icon = mobileMenuBtn.querySelector('i');
-                if (mobileMenu.classList.contains('hidden')) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                } else {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                }
-            });
-
-            // Close mobile menu on link click
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    mobileMenuBtn.querySelector('i').classList.remove('fa-xmark');
-                    mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-                });
-            });
-
-            // Scroll Events for Navbar transparency and Back to Top button
-            window.addEventListener('scroll', () => {
-                const nav = document.querySelector('nav');
-                if (window.scrollY > 20) {
-                    nav.classList.add('shadow-md');
-                } else {
-                    nav.classList.remove('shadow-md');
-                }
-
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-                    backToTopBtn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                    backToTopBtn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                }
-            });
-
-            // Back to top click
-            backToTopBtn.addEventListener('click', window.scrollToTop);
-        }
-
-        // Run Init on DOM Load
-        document.addEventListener('DOMContentLoaded', init);
-
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('hidden');
+        });
     </script>
 </body>
 </html>
