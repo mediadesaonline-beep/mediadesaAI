@@ -1,179 +1,132 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio CMS Admin - Media Desa Online</title>
-    <!-- Tailwind CSS & FontAwesome -->
+    <title>Media Desa Online DIY - Portal Berita & Informasi Desa</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
-</head>
-<body class="bg-slate-100 text-slate-800 min-h-screen py-8 px-4">
-
-    <!-- 1. POPUP LOGIN PASSWORD (LOCKED OVERLAY) -->
-    <div id="loginOverlay" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-center shadow-2xl border border-slate-100">
-            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
-                <i class="fas fa-lock"></i>
-            </div>
-            <div>
-                <h3 class="text-lg font-extrabold text-slate-900">CMS Redaksi Desa</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan kata sandi untuk mengakses panel admin</p>
-            </div>
-            <form onsubmit="handleLogin(event)" class="space-y-3">
-                <input type="password" id="inputPassword" placeholder="Masukkan Kata Sandi..." required
-                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-center font-bold tracking-wider focus:outline-none focus:border-blue-600 focus:bg-white transition">
-                <p id="errorPass" class="text-xs text-red-600 font-bold hidden flex items-center justify-center gap-1">
-                    <i class="fas fa-circle-exclamation"></i> Kata sandi salah!
-                </p>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2">
-                    <i class="fas fa-right-to-bracket"></i> Masuk Admin
-                </button>
-            </form>
-            <div class="pt-2 border-t border-slate-100">
-                <a href="index.html" class="text-xs text-slate-400 hover:text-slate-600 font-medium">&larr; Kembali ke Website Utama</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. MAIN CMS PANEL (Terbuka setelah login) -->
-    <div class="max-w-4xl mx-auto space-y-6">
-        
-        <!-- Header Admin -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-4">
-            <div>
-                <h1 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fas fa-newspaper text-blue-600"></i> CMS Redaksi Berita
-                </h1>
-                <p class="text-xs text-slate-500 mt-1">Kelola dan terbitkan berita desa secara realtime</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <a href="index.html" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
-                    <i class="fas fa-globe"></i> Website
-                </a>
-                <button onclick="logoutAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1" title="Keluar">
-                    <i class="fas fa-power-off"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Form Tambah Berita -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-            <h2 class="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-                <i class="fas fa-pen-to-square text-amber-500"></i> Form Tambah Berita Baru
-            </h2>
-
-            <form id="newsForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Judul Berita *</label>
-                    <input type="text" id="judul" required placeholder="Masukkan judul berita yang menarik..." 
-                        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:border-blue-600 focus:outline-none transition">
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kategori *</label>
-                        <select id="kategori" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:border-blue-600 focus:outline-none transition">
-                            <option value="Berita DIY">Berita DIY</option>
-                            <option value="Pemerintahan Desa">Pemerintahan Desa</option>
-                            <option value="Ekonomi & UMKM">Ekonomi & UMKM</option>
-                            <option value="Budaya & Wisata">Budaya & Wisata</option>
-                            <option value="Inspirasi Pembangunan">Inspirasi Pembangunan</option>
-                            <option value="Opini Warga">Opini Warga</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Penulis / Redaksi</label>
-                        <input type="text" id="penulis" placeholder="Contoh: Tim Warta Yogya" value="Redaksi Media Desa" 
-                            class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:border-blue-600 focus:outline-none transition">
-                    </div>
-                </div>
-
-                <!-- Input Gambar -->
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
-                        <i class="fas fa-image text-blue-600 me-1"></i> Link/URL Gambar Foto Berita (Opsional)
-                    </label>
-                    <input type="url" id="gambar" placeholder="https://images.unsplash.com/... atau link foto dari web/Blogger" 
-                        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:bg-white focus:border-blue-600 focus:outline-none transition">
-                    <p class="text-[11px] text-slate-400 mt-1">*Bisa dikosongkan jika tidak ada foto (akan memakai gambar bawaan).</p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Isi Berita Lengkap *</label>
-                    <textarea id="isi" rows="6" required placeholder="Tuliskan isi paragraf berita secara lengkap di sini..." 
-                        class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-sm focus:bg-white focus:border-blue-600 focus:outline-none transition"></textarea>
-                </div>
-
-                <div class="pt-2 flex items-center justify-between">
-                    <button type="submit" id="btnSimpan" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition flex items-center gap-2 shadow-lg shadow-blue-500/20">
-                        <i class="fas fa-paper-plane"></i> Terbitkan Berita
-                    </button>
-                    <span id="statusAlert" class="text-xs font-semibold"></span>
-                </div>
-            </form>
-        </div>
-
-        <!-- Tabel Berita -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-            <h2 class="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-                <i class="fas fa-list text-blue-600"></i> Daftar Berita Tersimpan
-            </h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-600">
-                    <thead class="bg-slate-50 text-slate-700 font-bold uppercase border-b border-slate-200">
-                        <tr>
-                            <th class="p-3">Gambar</th>
-                            <th class="p-3">Judul Berita</th>
-                            <th class="p-3">Kategori</th>
-                            <th class="p-3">Tanggal</th>
-                            <th class="p-3 text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelBerita" class="divide-y divide-slate-100">
-                        <tr>
-                            <td colspan="5" class="p-4 text-center text-slate-400">Memuat data berita...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- JavaScript Login Logika -->
     <script>
-        function handleLogin(e) {
-            e.preventDefault();
-            const inputPass = document.getElementById('inputPassword').value;
-            const errorPass = document.getElementById('errorPass');
-
-            if (inputPass === 'media123') {
-                sessionStorage.setItem('adminSession', 'active');
-                document.getElementById('loginOverlay').classList.add('hidden');
-            } else {
-                errorPass.classList.remove('hidden');
-                document.getElementById('inputPassword').value = '';
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#004aad',
+                        brandBlueDark: '#002f6c',
+                        brandGold: '#e5b82a',
+                        brandGoldHover: '#c99e1c',
+                        darkBg: '#0b1329',
+                        darkCard: '#111c38',
+                        darkHeader: '#080d1d'
+                    }
+                }
             }
         }
-
-        function logoutAdmin() {
-            sessionStorage.removeItem('adminSession');
-            location.reload();
-        }
-
-        // Cek Sesi Login saat halaman dimuat
-        if (sessionStorage.getItem('adminSession') === 'active') {
-            document.getElementById('loginOverlay').classList.add('hidden');
-        }
     </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1329; color: #f1f5f9; }
+        .ticker-wrap { overflow: hidden; white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
 
-    <!-- Firebase SDK JS -->
+    <!-- Top Bar -->
+    <div class="bg-darkHeader text-slate-300 text-xs border-b border-slate-800/80 py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-4 font-semibold text-slate-400">
+                <span><i class="far fa-calendar-alt text-brandGold me-1.5"></i> Sabtu, 8 Agustus 2026</span>
+                <span class="hidden md:inline">• AKTUAL • INSPIRATIF • TERPERCAYA</span>
+            </div>
+            <a href="admin.html" class="bg-brandGold hover:bg-brandGoldHover text-slate-950 font-extrabold px-3 py-1 rounded-md text-xs transition flex items-center gap-1.5 shadow">
+                <i class="fas fa-pen-to-square"></i> Masuk Studio CMS Admin
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Logo -->
+    <header class="bg-darkBg border-b border-slate-800 py-4 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-brandBlue border-2 border-brandGold rounded-xl flex items-center justify-center font-black text-2xl text-brandGold shadow-lg">MD</div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-2xl font-black tracking-tight text-white">mediadesaonline</h1>
+                        <span class="bg-brandBlue text-white text-[11px] font-extrabold px-2 py-0.5 rounded uppercase">DIY</span>
+                    </div>
+                    <p class="text-xs text-amber-400 font-medium">DIY DAN SEKITARNYA • Kalurahan & Pembangunan</p>
+                </div>
+            </div>
+            <div class="w-full md:w-80 relative">
+                <input type="text" placeholder="Cari berita desa / kalurahan..." class="w-full bg-darkCard border border-slate-700/80 rounded-full py-2 pl-10 pr-4 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-brandGold transition">
+                <i class="fas fa-search absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ticker Marquee -->
+    <div class="bg-darkHeader/90 border-b border-slate-800 py-1.5 px-4 text-xs flex items-center gap-3">
+        <span class="bg-brandBlue text-white font-extrabold px-2.5 py-0.5 rounded text-[10px] uppercase tracking-wider shrink-0">TERKINI</span>
+        <div class="ticker-wrap w-full text-slate-300 text-[11px]">
+            <div class="ticker-move" id="tickerContent">Memuat kabar terkini...</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-grow space-y-8">
+        
+        <!-- Headline Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="headlineSection">
+            <div class="lg:col-span-3 text-center py-16 text-slate-400">
+                <i class="fas fa-circle-notch fa-spin text-3xl text-brandGold mb-3"></i>
+                <p class="text-sm font-semibold">Mengambil data berita dari database...</p>
+            </div>
+        </div>
+
+        <!-- All News Grid -->
+        <div class="border-t border-slate-800 pt-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+                    <i class="fas fa-layer-group text-brandGold"></i> Semua Berita Desa
+                </h3>
+                <span id="totalBadge" class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">0 Artikel</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="beritaGrid"></div>
+        </div>
+
+    </main>
+
+    <!-- Modal Reading -->
+    <div id="newsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden justify-center items-center p-4">
+        <div class="bg-darkCard max-w-2xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="p-4 bg-darkHeader border-b border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2 text-xs">
+                    <span id="modalKategori" class="bg-brandGold text-slate-950 font-bold px-2.5 py-1 rounded"></span>
+                    <span id="modalTanggal" class="text-slate-400"></span>
+                </div>
+                <button id="btnCloseModal" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-slate-300 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <img id="modalGambar" src="" class="w-full h-64 object-cover rounded-xl" alt="Foto Berita">
+                <h2 id="modalJudul" class="text-xl font-extrabold text-white leading-snug"></h2>
+                <div id="modalPenulis" class="text-xs text-amber-400 font-semibold"></div>
+                <hr class="border-slate-800">
+                <div id="modalIsi" class="text-slate-300 text-sm leading-relaxed whitespace-pre-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase JS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCYXaOodCkG1i0jDorhgxp2ANJ8Z8KnPCs",
@@ -189,87 +142,148 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const newsForm = document.getElementById('newsForm');
-        const btnSimpan = document.getElementById('btnSimpan');
-        const statusAlert = document.getElementById('statusAlert');
-        const tabelBerita = document.getElementById('tabelBerita');
+        // Gambar Default jika user tidak upload foto
+        const DEFAULT_IMG = "https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?q=80&w=1000";
 
-        newsForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            btnSimpan.disabled = true;
-            btnSimpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            statusAlert.className = "text-xs font-semibold text-blue-600";
-            statusAlert.innerText = "Mengirim data ke Firebase...";
-
-            const judul = document.getElementById('judul').value;
-            const kategori = document.getElementById('kategori').value;
-            const penulis = document.getElementById('penulis').value || 'Redaksi';
-            const gambar = document.getElementById('gambar').value || 'https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?q=80&w=800';
-            const isi = document.getElementById('isi').value;
-
-            const tanggal = new Date().toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'long', year: 'numeric'
-            });
-
-            const newsRef = ref(db, 'berita');
-            push(newsRef, {
-                judul: judul,
-                kategori: kategori,
-                penulis: penulis,
-                gambar: gambar,
-                isi: isi,
-                tanggal: tanggal,
-                timestamp: Date.now()
-            }).then(() => {
-                statusAlert.className = "text-xs font-semibold text-green-600";
-                statusAlert.innerText = "✅ Berita Berhasil Diterbitkan!";
-                newsForm.reset();
-                btnSimpan.disabled = false;
-                btnSimpan.innerHTML = '<i class="fas fa-paper-plane"></i> Terbitkan Berita';
-            }).catch((error) => {
-                statusAlert.className = "text-xs font-semibold text-red-600";
-                statusAlert.innerText = "❌ Gagal: " + error.message;
-                btnSimpan.disabled = false;
-                btnSimpan.innerHTML = '<i class="fas fa-paper-plane"></i> Terbitkan Berita';
-            });
-        });
+        const headlineSection = document.getElementById('headlineSection');
+        const beritaGrid = document.getElementById('beritaGrid');
+        const totalBadge = document.getElementById('totalBadge');
+        const tickerContent = document.getElementById('tickerContent');
 
         const newsRef = ref(db, 'berita');
         onValue(newsRef, (snapshot) => {
             const data = snapshot.val();
             if (!data) {
-                tabelBerita.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada berita tersimpan.</td></tr>';
+                headlineSection.innerHTML = `
+                    <div class="lg:col-span-3 bg-darkCard border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
+                        <p class="font-bold text-base text-slate-300">Belum ada berita tersimpan.</p>
+                    </div>
+                `;
+                beritaGrid.innerHTML = '';
+                totalBadge.innerText = '0 Artikel';
                 return;
             }
 
-            let html = '';
-            Object.keys(data).reverse().forEach((key) => {
-                const item = data[key];
-                html += `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3">
-                            <img src="${item.gambar}" class="w-12 h-12 object-cover rounded-lg border border-slate-200" alt="foto">
-                        </td>
-                        <td class="p-3 font-bold text-slate-800">${item.judul}</td>
-                        <td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-[10px] font-bold">${item.kategori}</span></td>
-                        <td class="p-3 text-slate-400 text-[11px]">${item.tanggal}</td>
-                        <td class="p-3 text-center">
-                            <button onclick="hapusBerita('${key}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg transition" title="Hapus Berita">
-                                <i class="fas fa-trash-can"></i>
+            const newsList = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+            window.dataBerita = data;
+            totalBadge.innerText = `${newsList.length} Artikel`;
+
+            // Ticker
+            tickerContent.innerHTML = newsList.map(n => `• ${n.judul}`).join(' &nbsp;&nbsp;&nbsp;&nbsp; ');
+
+            // 1. Headline Utama (Paling Atas)
+            const main = newsList[0];
+            const mainImg = (main.gambar && main.gambar.trim() !== "") ? main.gambar : DEFAULT_IMG;
+            const sideNews = newsList.slice(1, 3);
+
+            let headlineHtml = `
+                <!-- Headline Kiri Kiri -->
+                <div class="lg:col-span-2 bg-darkCard border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+                    <div class="relative h-64 md:h-80 overflow-hidden bg-slate-800">
+                        <img src="${mainImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Foto Headline" onerror="this.src='${DEFAULT_IMG}'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkCard via-darkCard/30 to-transparent"></div>
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-brandGold text-slate-950 font-extrabold text-xs px-2.5 py-1 rounded">
+                                ${main.kategori || 'Berita DIY'}
+                            </span>
+                            <span class="bg-brandBlue text-white font-extrabold text-xs px-2.5 py-1 rounded">
+                                ★ Headline Utama
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-10 space-y-3 -mt-6 bg-darkCard rounded-t-2xl">
+                        <h2 class="text-xl md:text-2xl font-black text-white hover:text-amber-300 cursor-pointer transition leading-snug" onclick="bukaBerita('${main.id}')">
+                            ${main.judul}
+                        </h2>
+                        <div class="text-xs text-slate-400 flex items-center gap-3">
+                            <span><i class="far fa-calendar-alt me-1"></i>${main.tanggal || ''}</span>
+                            <span><i class="far fa-user me-1"></i>${main.penulis || 'Redaksi'}</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed line-clamp-3">${main.isi}</p>
+                        <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+                            <span class="text-xs text-amber-400 font-bold"><i class="far fa-eye me-1"></i> 1422 Pembaca</span>
+                            <button onclick="bukaBerita('${main.id}')" class="text-xs font-bold text-brandGold hover:underline flex items-center gap-1">
+                                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                             </button>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Cards Kanan -->
+                <div class="space-y-4 flex flex-col justify-between">
+            `;
+
+            if (sideNews.length > 0) {
+                sideNews.forEach(item => {
+                    const sImg = (item.gambar && item.gambar.trim() !== "") ? item.gambar : DEFAULT_IMG;
+                    headlineHtml += `
+                        <div class="bg-darkCard border border-slate-800 rounded-2xl p-4 hover:border-slate-700 transition cursor-pointer flex gap-4 items-center" onclick="bukaBerita('${item.id}')">
+                            <img src="${sImg}" class="w-24 h-24 object-cover rounded-xl shrink-0 bg-slate-800" alt="Foto Samping" onerror="this.src='${DEFAULT_IMG}'">
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-amber-400 uppercase">${item.kategori}</span>
+                                <h4 class="text-xs font-bold text-white line-clamp-2 hover:text-amber-300">${item.judul}</h4>
+                                <p class="text-[10px] text-slate-400"><i class="far fa-calendar-alt me-1"></i>${item.tanggal}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                headlineHtml += `<div class="bg-darkCard border border-slate-800 rounded-2xl p-6 text-center text-xs text-slate-500 flex-grow flex items-center justify-center">Belum ada berita sampingan.</div>`;
+            }
+
+            headlineHtml += `</div>`;
+            headlineSection.innerHTML = headlineHtml;
+
+            // 2. Render Grid Semua Berita (Mulai dari berita ke-4 dst)
+            const remainingNews = newsList.length > 3 ? newsList.slice(3) : newsList;
+            let gridHtml = '';
+
+            remainingNews.forEach(item => {
+                const gImg = (item.gambar && item.gambar.trim() !== "") ? item.gambar : DEFAULT_IMG;
+                gridHtml += `
+                    <div class="bg-darkCard border border-slate-800 rounded-2xl overflow-hidden hover:border-brandGold/50 transition flex flex-col justify-between">
+                        <div class="h-48 overflow-hidden bg-slate-800">
+                            <img src="${gImg}" class="w-full h-full object-cover hover:scale-105 transition duration-300" alt="Foto Grid" onerror="this.src='${DEFAULT_IMG}'">
+                        </div>
+                        <div class="p-5 space-y-2 flex-grow">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-slate-800 text-amber-400 font-bold px-2 py-0.5 rounded text-[10px]">${item.kategori}</span>
+                                <span class="text-slate-500 text-[10px]">${item.tanggal}</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-white cursor-pointer hover:text-amber-300 line-clamp-2" onclick="bukaBerita('${item.id}')">${item.judul}</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2">${item.isi}</p>
+                        </div>
+                        <div class="p-5 pt-0 flex justify-between items-center text-xs border-t border-slate-800/50">
+                            <span class="text-slate-500 text-[10px]">✍️ ${item.penulis || 'Redaksi'}</span>
+                            <button onclick="bukaBerita('${item.id}')" class="font-bold text-brandGold hover:underline text-xs">Baca <i class="fas fa-arrow-right text-[10px]"></i></button>
+                        </div>
+                    </div>
                 `;
             });
-            tabelBerita.innerHTML = html;
+            beritaGrid.innerHTML = gridHtml;
         });
 
-        window.hapusBerita = function(id) {
-            if (confirm('Yakin ingin menghapus berita ini?')) {
-                remove(ref(db, 'berita/' + id));
-            }
+        // Modal Reader
+        window.bukaBerita = function(id) {
+            const item = window.dataBerita[id];
+            if (!item) return;
+
+            document.getElementById('modalJudul').innerText = item.judul;
+            document.getElementById('modalKategori').innerText = item.kategori || 'Umum';
+            document.getElementById('modalTanggal').innerText = '📅 ' + (item.tanggal || '');
+            document.getElementById('modalPenulis').innerText = '✍️ Penulis: ' + (item.penulis || 'Redaksi');
+            document.getElementById('modalIsi').innerText = item.isi;
+
+            const modalImg = document.getElementById('modalGambar');
+            modalImg.src = (item.gambar && item.gambar.trim() !== "") ? item.gambar : DEFAULT_IMG;
+
+            document.getElementById('newsModal').classList.remove('hidden');
+            document.getElementById('newsModal').classList.add('flex');
         };
+
+        document.getElementById('btnCloseModal').addEventListener('click', () => {
+            document.getElementById('newsModal').classList.add('hidden');
+        });
     </script>
 </body>
 </html>
