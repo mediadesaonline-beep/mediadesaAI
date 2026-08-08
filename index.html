@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="dark h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,1608 +17,369 @@
                         brandBlueDark: '#002f6c',
                         brandGold: '#e5b82a',
                         brandGoldHover: '#c99e1c',
-                        brandGoldDark: '#997600',
+                        darkBg: '#0b1329',
+                        darkCard: '#111c38',
+                        darkHeader: '#080d1d'
                     }
                 }
             }
         }
-        // Initialize Theme from localStorage before render
-        if (localStorage.getItem('mediadesa_theme') === 'dark' || (!('mediadesa_theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
     </script>
+
     <!-- FontAwesome & Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        .dark ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #004aad; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #002f6c; }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-marquee {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1329; color: #f1f5f9; }
+        .ticker-wrap { overflow: hidden; white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased min-h-screen flex flex-col selection:bg-brandGold selection:text-slate-900 transition-colors duration-300">
+<body class="min-h-screen flex flex-col">
 
-    <div class="bg-brandBlueDark text-white text-xs py-2 px-4 shadow-inner">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center space-x-3">
-                <span class="inline-flex items-center text-amber-300 font-medium">
-                    <i class="far fa-calendar-alt me-1.5"></i> <span id="current-date-display">Jumat, 7 Agustus 2026</span>
-                </span>
-                <span class="hidden md:inline text-slate-400">•</span>
-                <span id="txt-tagline" class="hidden md:inline bg-gradient-to-r from-amber-400 to-yellow-200 bg-clip-text text-transparent font-extrabold tracking-wider">
-                    AKTUAL • INSPIRATIF • TERPERCAYA
-                </span>
+    <!-- 1. Top Bar -->
+    <div class="bg-darkHeader text-slate-300 text-xs border-b border-slate-800/80 py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-4 font-semibold text-slate-400">
+                <span><i class="far fa-calendar-alt text-brandGold me-1.5"></i> <span id="currentDate">Sabtu, 8 Agustus 2026</span></span>
+                <span class="hidden md:inline">•</span>
+                <span class="hidden md:inline uppercase tracking-wider text-[11px] text-slate-300">AKTUAL • INSPIRATIF • TERPERCAYA</span>
             </div>
-
-            <!-- Language Switcher, Dark/Light Mode & Actions -->
-            <div class="flex items-center space-x-2.5 flex-wrap justify-center">
-                <!-- 3 Languages Dropdown -->
-                <div class="relative inline-flex items-center bg-slate-800/80 rounded-lg px-2 py-0.5 border border-blue-400/30">
-                    <i class="fas fa-language text-amber-300 me-1.5"></i>
-                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer">
-                        <option value="id" class="bg-slate-900 text-white">🇮🇩 Indonesia (ID)</option>
-                        <option value="en" class="bg-slate-900 text-white">🇬🇧 English (EN)</option>
-                        <option value="jv" class="bg-slate-900 text-white">🏛️ Basa Jawa (JV)</option>
-                    </select>
-                </div>
-
-                <!-- Dark / Light Mode Toggle Button -->
-                <button id="theme-toggle-btn" onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-2.5 py-1 rounded-lg text-xs border border-blue-400/30 transition flex items-center gap-1.5" title="Ganti Mode Gelap / Terang">
-                    <i id="theme-icon" class="fas fa-moon"></i> <span id="theme-text" class="hidden sm:inline">Gelap</span>
+            <div class="flex items-center gap-3">
+                <button class="bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-md text-[11px] flex items-center gap-1 border border-slate-700">
+                    <i class="fas fa-globe text-brandGold"></i> ID Indonesia (ID) <i class="fas fa-chevron-down text-[9px]"></i>
                 </button>
-
-                <!-- CMS Switcher Button -->
-                <button id="btn-toggle-view" onclick="toggleView()" class="bg-brandGold hover:bg-brandGoldHover text-slate-900 font-bold px-3 py-1 rounded-full text-xs shadow transition flex items-center gap-1.5">
-                    <i class="fas fa-edit"></i> <span id="view-toggle-text">Masuk Studio CMS Admin</span>
+                <button class="bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-md text-[11px] flex items-center gap-1 border border-slate-700">
+                    <i class="fas fa-moon text-brandGold"></i> Gelap
                 </button>
+                <a href="admin.html" class="bg-brandGold hover:bg-brandGoldHover text-slate-950 font-extrabold px-3 py-1 rounded-md text-xs transition flex items-center gap-1.5 shadow">
+                    <i class="fas fa-pen-to-square"></i> Masuk Studio CMS Admin
+                </a>
             </div>
         </div>
     </div>
 
-    <header class="bg-white dark:bg-slate-800 border-b-4 border-brandGold shadow-md sticky top-0 z-40 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-            
-            <!-- Brand Logo Graphic & Title -->
-            <a href="#" onclick="switchCategory('Semua'); return false;" class="flex items-center gap-3 group">
-                <div class="relative w-14 h-14 bg-gradient-to-br from-brandBlueDark to-brandBlue rounded-xl p-1.5 shadow-lg flex items-center justify-center border-2 border-brandGold">
-                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow">
-                        <path d="M50 10 L56 35 L54 60 L65 75 L35 75 L46 60 L44 35 Z" fill="#ffffff" />
-                        <path d="M50 5 L53 15 L47 15 Z" fill="#e5b82a" />
-                        <text x="12" y="65" font-family="sans-serif" font-weight="900" font-size="38" fill="#e5b82a" opacity="0.9">M</text>
-                        <text x="58" y="65" font-family="sans-serif" font-weight="900" font-size="38" fill="#e5b82a" opacity="0.9">D</text>
-                        <path d="M5 82 Q 50 68, 95 82 L 95 90 L 5 90 Z" fill="#e5b82a" />
-                    </svg>
+    <!-- 2. Main Logo Header -->
+    <header class="bg-darkBg border-b border-slate-800 py-4 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <!-- Logo MD Box -->
+                <div class="w-12 h-12 bg-brandBlue border-2 border-brandGold rounded-xl flex items-center justify-center font-black text-2xl text-brandGold shadow-lg">
+                    MD
                 </div>
-
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="text-2xl md:text-3xl font-black text-brandBlue dark:text-amber-400 tracking-tight group-hover:text-brandBlueDark dark:group-hover:text-amber-300 transition">
-                            media<span class="text-brandGold">desa</span>online
-                        </span>
-                        <span class="bg-brandBlue text-white text-xs font-black px-2 py-0.5 rounded shadow">DIY</span>
-                    </div>
+                <div>
                     <div class="flex items-center gap-2">
-                        <span id="txt-brand-sub" class="text-[11px] font-extrabold tracking-widest text-slate-500 dark:text-slate-400 uppercase">DIY Dan Sekitarnya</span>
-                        <span class="text-xs text-brandGold font-bold">• Kalurahan & Pembangunan</span>
+                        <h1 class="text-2xl font-black tracking-tight text-white">mediadesaonline</h1>
+                        <span class="bg-brandBlue text-white text-[11px] font-extrabold px-2 py-0.5 rounded uppercase">DIY</span>
                     </div>
+                    <p class="text-xs text-amber-400 font-medium">DIY DAN SEKITARNYA • Kalurahan & Pembangunan</p>
                 </div>
-            </a>
+            </div>
 
             <!-- Search Bar -->
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <div class="relative flex-grow md:w-72">
-                    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Cari berita desa / kalurahan..." 
-                        class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-brandBlue focus:bg-white dark:focus:bg-slate-800 transition">
-                    <i class="fas fa-search absolute left-3 top-2.5 text-slate-400 dark:text-slate-300 text-sm"></i>
-                </div>
+            <div class="w-full md:w-80 relative">
+                <input type="text" id="searchInput" placeholder="Cari berita desa / kalurahan..." 
+                    class="w-full bg-darkCard border border-slate-700/80 rounded-full py-2 pl-10 pr-4 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-brandGold transition">
+                <i class="fas fa-search absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
             </div>
         </div>
-
-        <!-- Category Navigation Menu -->
-        <nav class="bg-brandBlue text-white border-t border-blue-800 dark:border-slate-700">
-            <div class="max-w-7xl mx-auto px-4 flex items-center justify-between overflow-x-auto no-scrollbar text-sm font-semibold">
-                <div class="flex space-x-1 py-1" id="category-nav-container">
-                    <!-- Populated dynamically by JS -->
-                </div>
-                <div class="hidden lg:flex items-center gap-2 text-xs bg-brandBlueDark px-3 py-1.5 rounded text-amber-300 shrink-0">
-                    <i class="fas fa-bolt animate-pulse"></i> <span id="txt-active-redaction">Redaksi Aktif</span>
-                </div>
-            </div>
-        </nav>
     </header>
 
-    <div class="bg-amber-50 dark:bg-slate-800/90 border-b border-amber-200 dark:border-slate-700 py-1.5 px-4 text-xs transition-colors">
-        <div class="max-w-7xl mx-auto flex items-center gap-3">
-            <span id="txt-breaking-label" class="bg-brandBlue text-white px-2 py-0.5 rounded font-extrabold uppercase shrink-0 text-[10px] tracking-wide">
-                <i class="fas fa-bullhorn me-1"></i> Terkini
-            </span>
-            <div class="overflow-hidden whitespace-nowrap w-full">
-                <div id="ticker-content" class="inline-block animate-marquee font-medium text-slate-700 dark:text-slate-200">
-                    <!-- Dynamic Ticker Items -->
-                </div>
+    <!-- 3. Navigation Categories -->
+    <nav class="bg-darkHeader border-b border-slate-800 px-4 py-2 sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto gap-2 scrollbar-none">
+            <div class="flex items-center gap-2 text-xs font-bold whitespace-nowrap py-1">
+                <button onclick="filterKategori('Semua')" class="bg-brandGold text-slate-950 px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow">
+                    <i class="fas fa-globe"></i> Semua
+                </button>
+                <button onclick="filterKategori('Berita DIY')" class="hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full transition"># Berita DIY</button>
+                <button onclick="filterKategori('Pemerintahan Desa')" class="hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full transition"># Pemerintahan Desa</button>
+                <button onclick="filterKategori('Ekonomi & UMKM')" class="hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full transition"># Ekonomi & UMKM</button>
+                <button onclick="filterKategori('Budaya & Wisata')" class="hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full transition"># Budaya & Wisata</button>
+                <button onclick="filterKategori('Inspirasi Pembangunan')" class="bg-brandBlue/30 text-blue-300 border border-brandBlue/50 px-3 py-1.5 rounded-full"># Inspirasi Pembangunan</button>
+                <button onclick="filterKategori('Opini Warga')" class="hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full transition"># Opini Warga</button>
+            </div>
+            <div class="hidden lg:flex items-center gap-1.5 bg-blue-950/60 text-blue-300 border border-blue-800/50 px-3 py-1 rounded-full text-[11px] font-bold">
+                <i class="fas fa-bolt text-amber-400"></i> Redaksi Aktif
+            </div>
+        </div>
+    </nav>
+
+    <!-- 4. Running News Ticker -->
+    <div class="bg-darkHeader/90 border-b border-slate-800 py-1.5 px-4 text-xs flex items-center gap-3">
+        <span class="bg-brandBlue text-white font-extrabold px-2.5 py-0.5 rounded text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0">
+            <i class="fas fa-bullhorn text-amber-300"></i> TERKINI
+        </span>
+        <div class="ticker-wrap w-full text-slate-300 text-[11px]">
+            <div class="ticker-move" id="tickerContent">
+                • Wisata Bantul: Dari Pantai Selatan hingga Pesona Perbukitan Mangunan &nbsp;&nbsp;&nbsp;&nbsp;
+                • Wisata Kulon Progo: Pesona Alam dari Perbukitan Menoreh &nbsp;&nbsp;&nbsp;&nbsp;
+                • Wisata Sleman: Pesona Alam, Desa, dan Budaya &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <!-- 5. Main Content Section -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-grow space-y-8">
 
-        <div id="view-portal" class="space-y-8">
-            
-            <!-- Featured Headline Section -->
-            <section id="featured-section" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="main-headline-container" class="lg:col-span-2">
-                    <!-- Rendered by JS -->
-                </div>
-                <div class="flex flex-col gap-4" id="sub-headlines-container">
-                    <!-- Rendered by JS -->
-                </div>
-            </section>
-
-            <!-- Main Content Area: Articles List + Sidebar -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                <!-- Left Section: Main Feed -->
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-brandGold pb-2">
-                        <h2 class="text-xl font-extrabold text-brandBlueDark dark:text-amber-400 flex items-center gap-2">
-                            <i class="fas fa-layer-group text-brandGold"></i> 
-                            <span id="current-category-label">Semua Berita Desa</span>
-                        </h2>
-                        <span id="article-count-badge" class="text-xs bg-slate-200 dark:bg-slate-700 dark:text-slate-200 font-bold px-2.5 py-1 rounded-full text-slate-700">
-                            0 Artikel
-                        </span>
-                    </div>
-
-                    <!-- Articles Grid -->
-                    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <!-- Dynamic News Cards -->
-                    </div>
-
-                    <!-- Empty State -->
-                    <div id="empty-state" class="hidden text-center py-12 bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700">
-                        <i class="fas fa-newspaper text-5xl text-slate-300 dark:text-slate-600 mb-3"></i>
-                        <h3 id="txt-empty-title" class="font-bold text-slate-700 dark:text-slate-200 text-lg">Belum Ada Artikel Berita</h3>
-                        <p id="txt-empty-desc" class="text-sm text-slate-500 dark:text-slate-400 mt-1">Gunakan Studio CMS Admin untuk membuat atau mengedit berita pertama Anda.</p>
-                        <button onclick="toggleView()" class="mt-4 bg-brandBlue text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-brandBlueDark">
-                            <span id="txt-empty-btn">Buka Studio CMS</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Right Sidebar Widget -->
-                <aside class="space-y-6">
-                    
-                    <!-- Testimoni Tokoh Widget -->
-                    <div class="bg-gradient-to-br from-brandBlueDark to-brandBlue text-white p-5 rounded-2xl shadow-lg border border-amber-400/30 relative overflow-hidden">
-                        <div class="flex items-center justify-between mb-3 border-b border-blue-800/80 pb-2.5">
-                            <span class="text-xs uppercase font-extrabold tracking-wider text-amber-300 flex items-center gap-1.5">
-                                <i class="fas fa-quote-left text-brandGold"></i> <span id="txt-testimonial-title">Testimoni Tokoh</span>
-                            </span>
-                            <span id="txt-testimonial-badge" class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-                                DIY & Kalurahan
-                            </span>
-                        </div>
-                        
-                        <!-- Testimonial Content Box -->
-                        <div id="testimonial-card" class="space-y-3 min-h-[130px] flex flex-col justify-between">
-                            <p id="testimonial-quote" class="text-xs text-blue-100 italic leading-relaxed">
-                                "Media Desa Online menjadi wadah transparansi dan jembatan informasi yang sangat efektif antara pemerintah kalurahan dan warga masyarakat."
-                            </p>
-                            
-                            <div class="flex items-center justify-between pt-2">
-                                <div class="flex items-center gap-2.5">
-                                    <div id="testimonial-avatar" class="w-9 h-9 rounded-full bg-brandGold text-slate-900 font-black flex items-center justify-center text-xs shadow-md border-2 border-white/20">
-                                        KH
-                                    </div>
-                                    <div>
-                                        <h4 id="testimonial-name" class="font-extrabold text-xs text-white">H. Kunto Harjono</h4>
-                                        <p id="testimonial-role" class="text-[10px] text-amber-300">Lurah Kalurahan Pakem, Sleman</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-1">
-                                    <button onclick="prevTestimonial()" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-[10px] transition" title="Testimoni Sebelumnya">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </button>
-                                    <button onclick="nextTestimonial()" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-[10px] transition" title="Testimoni Selanjutnya">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Redaksi Profile Card -->
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-10 bg-brandBlue text-white rounded-xl flex items-center justify-center text-lg font-bold">
-                                <i class="fas fa-landmark"></i>
-                            </div>
-                            <div>
-                                <h3 id="txt-redaction-title" class="font-bold text-slate-800 dark:text-slate-100 text-sm">Redaksi Media Desa Online</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400">D.I. Yogyakarta & Sekitarnya</p>
-                            </div>
-                        </div>
-                        <p id="txt-redaction-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
-                            Menyajikan kabar pembangunan kalurahan, inovasi desa, potensi wisata, dan kearifan lokal masyarakat Yogyakarta.
-                        </p>
-                        <div class="text-xs border-t pt-3 border-slate-100 dark:border-slate-700 space-y-1 text-slate-500 dark:text-slate-400">
-                            <p><i class="fas fa-envelope text-brandBlue me-1.5"></i> mediadesaonline@gmail.com</p>
-                            <p><i class="fas fa-phone text-brandBlue me-1.5"></i> +62 855-1236-277 (Layanan Warta)</p>
-                        </div>
-                    </div>
-
-                    <!-- Trending News Sidebar Widget -->
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
-                        <h3 class="font-extrabold text-slate-800 dark:text-slate-100 text-base border-b dark:border-slate-700 pb-3 mb-3 flex items-center justify-between">
-                            <span><i class="fas fa-fire text-amber-500 me-2"></i><span id="txt-trending-title">Terpopuler Hari Ini</span></span>
-                        </h3>
-                        <div id="trending-list" class="space-y-3">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Quick Regional Info Widget -->
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
-                        <h3 class="font-extrabold text-slate-800 dark:text-slate-100 text-sm mb-3">
-                            <i class="fas fa-map-marked-alt text-brandBlue me-2"></i><span id="txt-coverage-title">Cakupan Wilayah DIY</span>
-                        </h3>
-                        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border dark:border-slate-600 text-center">Kab. Sleman</span>
-                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border dark:border-slate-600 text-center">Kab. Bantul</span>
-                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border dark:border-slate-600 text-center">Kab. Gunungkidul</span>
-                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border dark:border-slate-600 text-center">Kab. Kulon Progo</span>
-                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border dark:border-slate-600 text-center col-span-2">Kota Yogyakarta</span>
-                        </div>
-                    </div>
-
-                </aside>
+        <!-- Headline Grid (Main + Side Cards) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="headlineSection">
+            <!-- Loading State Placeholder -->
+            <div class="lg:col-span-3 text-center py-16 text-slate-400">
+                <i class="fas fa-circle-notch fa-spin text-3xl text-brandGold mb-3"></i>
+                <p class="text-sm font-semibold">Mengambil berita terbaru dari database...</p>
             </div>
         </div>
 
-        <div id="view-cms" class="hidden space-y-8">
-            
-            <!-- CMS Header & Stats Banner -->
-            <div class="bg-gradient-to-r from-brandBlueDark via-brandBlue to-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <span id="txt-cms-badge" class="bg-brandGold text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded-md uppercase tracking-wider">Studio CMS Redaksi</span>
-                    <h2 id="txt-cms-title" class="text-2xl font-black mt-2">Kelola & Terbitkan Berita Kalurahan</h2>
-                    <p id="txt-cms-subtitle" class="text-xs text-blue-200 mt-1">Tambah artikel baru, edit konten terpublikasi, atau ubah status draf.</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="logoutCms()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-2.5 rounded-xl text-xs transition shadow flex items-center gap-1.5" title="Keluar Sesi Admin">
-                        <i class="fas fa-sign-out-alt"></i> <span id="txt-btn-logout">Keluar Admin</span>
-                    </button>
-                    <button onclick="openNewArticleForm()" class="bg-brandGold hover:bg-brandGoldHover text-slate-900 font-extrabold px-4 py-2.5 rounded-xl text-sm transition shadow flex items-center gap-2">
-                        <i class="fas fa-plus-circle"></i> <span id="txt-btn-new">Tulis Berita Baru</span>
-                    </button>
-                    <button onclick="exportDataJSON()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-3 py-2.5 rounded-xl text-xs transition border border-white/20" title="Export Backup JSON">
-                        <i class="fas fa-download me-1"></i> <span id="txt-btn-backup">Backup</span>
-                    </button>
-                </div>
+        <!-- Section Title: Semua Berita Desa -->
+        <div class="border-t border-slate-800 pt-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+                    <i class="fas fa-layer-group text-brandGold"></i> Semua Berita Desa
+                </h3>
+                <span id="totalBeritaBadge" class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">
+                    0 Artikel
+                </span>
             </div>
 
-            <!-- Stats Overview Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p id="txt-stat-1" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Total Artikel</p>
-                    <p class="text-2xl font-black text-brandBlue dark:text-amber-400 mt-1" id="stat-total">0</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p id="txt-stat-2" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Terpublikasi</p>
-                    <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1" id="stat-published">0</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p id="txt-stat-3" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Draf / Simpanan</p>
-                    <p class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1" id="stat-drafts">0</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p id="txt-stat-4" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Total Pembaca</p>
-                    <p class="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1" id="stat-views">0</p>
-                </div>
-            </div>
-
-            <!-- ARTICLE FORM (CREATE / EDIT) -->
-            <div id="article-form-card" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700">
-                <div class="flex items-center justify-between border-b dark:border-slate-700 pb-4 mb-5">
-                    <h3 id="form-title-label" class="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                        <i class="fas fa-pen-nib text-brandBlue dark:text-amber-400"></i> Tulis Berita Baru
-                    </h3>
-                    <button onclick="resetArticleForm()" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white underline">
-                        Bersihkan Form
-                    </button>
-                </div>
-
-                <form id="article-form" onsubmit="saveArticle(event)" class="space-y-5">
-                    <input type="hidden" id="form-article-id" value="">
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Judul Berita *</label>
-                            <input type="text" id="form-title" required placeholder="Contoh: Panen Raya Organik Kalurahan Pakem Sleman Melimpah" 
-                                class="w-full px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue font-semibold">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Kategori *</label>
-                            <select id="form-category" required class="w-full px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue font-medium">
-                                <option value="Berita DIY">Berita DIY</option>
-                                <option value="Pemerintahan Desa">Pemerintahan Desa</option>
-                                <option value="Ekonomi & UMKM">Ekonomi & UMKM</option>
-                                <option value="Budaya & Wisata">Budaya & Wisata</option>
-                                <option value="Inspirasi Pembangunan">Inspirasi Pembangunan</option>
-                                <option value="Opini Warga">Opini Warga</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">URL Gambar / Foto Berita *</label>
-                            <div class="flex gap-2">
-                                <input type="url" id="form-image" required placeholder="https://images.unsplash.com/photo-..." 
-                                    class="w-full px-4 py-2 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue">
-                                <button type="button" onclick="useRandomPresetImage()" class="px-3 py-2 bg-slate-200 dark:bg-slate-600 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-500 text-slate-700 rounded-xl text-xs font-bold whitespace-nowrap">
-                                    <i class="fas fa-random me-1"></i> Gambar Acak
-                                </button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Penulis / Redaksi *</label>
-                            <input type="text" id="form-author" required placeholder="Redaksi / Tim Warta Kalurahan" 
-                                class="w-full px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue font-medium">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Ringkasan Berita (Excerpt) *</label>
-                        <textarea id="form-summary" rows="2" required placeholder="Tuliskan 1-2 kalimat ringkasan utama berita untuk tampilan depan..."
-                            class="w-full px-4 py-2 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Isi Berita Lengkap *</label>
-                        <textarea id="form-content" rows="8" required placeholder="Tuliskan isi berita selengkapnya di sini. Gunakan baris baru untuk memisahkan paragraf..."
-                            class="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brandBlue leading-relaxed"></textarea>
-                    </div>
-
-                    <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t dark:border-slate-700">
-                        <div class="flex items-center space-x-6">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="form-is-published" checked class="w-4 h-4 text-brandBlue rounded focus:ring-brandBlue">
-                                <span class="ms-2 text-xs font-bold text-slate-700 dark:text-slate-200">Langsung Publikasikan</span>
-                            </label>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="form-is-featured" class="w-4 h-4 text-amber-500 rounded focus:ring-amber-400">
-                                <span class="ms-2 text-xs font-bold text-amber-700 dark:text-amber-400"><i class="fas fa-star me-1"></i> Jadikan Berita Utama (Headline)</span>
-                            </label>
-                        </div>
-
-                        <div class="flex items-center gap-3">
-                            <button type="button" onclick="resetArticleForm()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-600 transition">
-                                Batal
-                            </button>
-                            <button type="submit" class="px-6 py-2.5 bg-brandBlue hover:bg-brandBlueDark text-white text-xs font-extrabold rounded-xl transition shadow flex items-center gap-2">
-                                <i class="fas fa-save"></i> Simpan Artikel Berita
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- ARTICLES MANAGEMENT TABLE -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <h3 class="font-extrabold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
-                        <i class="fas fa-list-alt text-brandBlue dark:text-amber-400"></i> Daftar Semua Berita Redaksi
-                    </h3>
-                    <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <button onclick="restoreDefaultData()" class="text-xs text-rose-600 hover:text-rose-800 font-bold px-3 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950 transition">
-                            <i class="fas fa-undo me-1"></i> Reset Berita Contoh
-                        </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 uppercase font-bold border-b dark:border-slate-700">
-                            <tr>
-                                <th class="p-4">Judul & Kategori</th>
-                                <th class="p-4">Penulis</th>
-                                <th class="p-4">Status</th>
-                                <th class="p-4 text-center">Pembaca</th>
-                                <th class="p-4 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cms-table-body" class="divide-y divide-slate-100 dark:divide-slate-700">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Grid Daftar Berita -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="beritaGrid">
+                <!-- Data dari Firebase akan dirender di sini -->
             </div>
         </div>
 
     </main>
 
-    <div id="article-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 max-w-3xl w-full rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 my-8 max-h-[90vh] flex flex-col">
-            <div class="p-4 sm:p-6 bg-brandBlueDark text-white flex justify-between items-center shrink-0">
-                <div class="flex items-center gap-2">
-                    <span id="modal-category" class="bg-brandGold text-slate-900 font-extrabold px-2.5 py-0.5 rounded text-xs uppercase"></span>
-                    <span class="text-xs text-blue-200" id="modal-date"></span>
+    <!-- 6. Footer -->
+    <footer class="bg-darkHeader border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-12">
+        <p class="font-bold text-slate-400">Media Desa Online DIY &copy; 2026</p>
+        <p class="mt-1">Kabar Pembangunan & Inovasi Kalurahan Daerah Istimewa Yogyakarta</p>
+    </footer>
+
+    <!-- 7. Modal Pop-up Baca Berita -->
+    <div id="newsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden justify-center items-center p-4">
+        <div class="bg-darkCard max-w-2xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="p-4 bg-darkHeader border-b border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2 text-xs">
+                    <span id="modalKategori" class="bg-brandGold text-slate-950 font-bold px-2.5 py-1 rounded"></span>
+                    <span id="modalTanggal" class="text-slate-400"></span>
                 </div>
-                <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition">
+                <button id="btnCloseModal" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white flex items-center justify-center transition">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
-            <div class="p-6 overflow-y-auto space-y-6">
-                <h1 id="modal-title" class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 dark:text-white leading-tight"></h1>
-                
-                <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 border-b dark:border-slate-700 pb-4">
-                    <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full bg-brandBlue text-white font-bold flex items-center justify-center text-xs" id="modal-author-avatar">R</div>
-                        <div>
-                            <span class="font-bold text-slate-700 dark:text-slate-300" id="modal-author"></span>
-                            <span class="block text-[10px]" id="modal-read-time">3 menit baca</span>
-                        </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <h2 id="modalJudul" class="text-xl font-extrabold text-white leading-snug"></h2>
+                <div id="modalPenulis" class="text-xs text-amber-400 font-semibold"></div>
+                <hr class="border-slate-800">
+                <div id="modalIsi" class="text-slate-300 text-sm leading-relaxed whitespace-pre-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase JS SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Kunci Firebase Milik Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYXaOodCkG1i0jDorhgxp2ANJ8Z8KnPCs",
+            authDomain: "mediadesaoline.firebaseapp.com",
+            databaseURL: "https://mediadesaoline-default-rtdb.firebaseio.com",
+            projectId: "mediadesaoline",
+            storageBucket: "mediadesaoline.firebasestorage.app",
+            messagingSenderId: "765798318937",
+            appId: "1:765798318937:web:e130472ab703142d7fc248",
+            measurementId: "G-38MSGEPHS9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const headlineSection = document.getElementById('headlineSection');
+        const beritaGrid = document.getElementById('beritaGrid');
+        const totalBeritaBadge = document.getElementById('totalBeritaBadge');
+        const tickerContent = document.getElementById('tickerContent');
+
+        let allNews = [];
+
+        // Ambil Data Realtime dari Firebase
+        const newsRef = ref(db, 'berita');
+        onValue(newsRef, (snapshot) => {
+            const data = snapshot.val();
+
+            if (!data) {
+                headlineSection.innerHTML = `
+                    <div class="lg:col-span-3 bg-darkCard border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
+                        <i class="fas fa-folder-open text-4xl mb-3 text-slate-600"></i>
+                        <p class="font-bold text-base text-slate-300">Belum ada berita tersimpan di database.</p>
+                        <p class="text-xs mt-1">Silakan terbitkan berita dari halaman <a href="admin.html" class="text-brandGold font-bold underline">Studio Admin CMS</a>.</p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1"><i class="fas fa-eye"></i> <span id="modal-views">0</span> Pembaca</span>
-                        <button onclick="shareArticle()" class="bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue dark:text-amber-400 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
-                            <i class="fas fa-share-alt"></i> Bagikan
+                `;
+                beritaGrid.innerHTML = '';
+                totalBeritaBadge.innerText = '0 Artikel';
+                return;
+            }
+
+            allNews = Object.keys(data).map(key => ({
+                id: key,
+                ...data[key]
+            })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            window.dataBerita = data;
+            renderWebsite(allNews);
+        });
+
+        function renderWebsite(newsList) {
+            totalBeritaBadge.innerText = `${newsList.length} Artikel`;
+
+            if (newsList.length === 0) return;
+
+            // Update Ticker Marquee secara dinamis
+            const tickerTitles = newsList.map(n => `• ${n.judul}`).join(' &nbsp;&nbsp;&nbsp;&nbsp; ');
+            tickerContent.innerHTML = tickerTitles + ' &nbsp;&nbsp;&nbsp;&nbsp; ' + tickerTitles;
+
+            // 1. Render Headline Card (Berita Pertama/Terbaru)
+            const main = newsList[0];
+            const mainSnippet = main.isi.length > 200 ? main.isi.substring(0, 200) + '...' : main.isi;
+            
+            // Side News (Berita ke-2 & ke-3)
+            const sideNews = newsList.slice(1, 3);
+
+            let headlineHtml = `
+                <!-- Main Headline Card (Kiri) -->
+                <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-darkCard border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between p-6 md:p-8 relative">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brandGold text-slate-950 font-extrabold text-xs px-2.5 py-1 rounded uppercase">
+                                ${escapeHtml(main.kategori || 'Berita DIY')}
+                            </span>
+                            <span class="bg-brandBlue text-white font-extrabold text-xs px-2.5 py-1 rounded uppercase">
+                                ★ Headline Utama
+                            </span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black text-white hover:text-amber-300 transition cursor-pointer leading-tight" onclick="bukaBerita('${main.id}')">
+                            ${escapeHtml(main.judul)}
+                        </h2>
+                        <div class="flex items-center gap-4 text-xs text-slate-400">
+                            <span><i class="far fa-calendar-alt me-1"></i>${escapeHtml(main.tanggal || '')}</span>
+                            <span><i class="far fa-user me-1"></i>${escapeHtml(main.penulis || 'Tim Warta Yogya')}</span>
+                        </div>
+                        <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                            ${escapeHtml(mainSnippet)}
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+                        <span class="text-xs text-amber-400 font-bold"><i class="far fa-eye me-1"></i> 1422 Pembaca</span>
+                        <button onclick="bukaBerita('${main.id}')" class="text-xs font-extrabold text-brandGold hover:underline flex items-center gap-1">
+                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="rounded-2xl overflow-hidden shadow-md max-h-96 bg-slate-200 dark:bg-slate-700">
-                    <img id="modal-image" src="" alt="Thumbnail" class="w-full h-full object-cover">
-                </div>
-
-                <div id="modal-content" class="text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed space-y-4">
-                    <!-- Dynamic Body -->
-                </div>
-
-                <!-- Interactive Comment Section inside Modal -->
-                <div class="border-t dark:border-slate-700 pt-6 mt-8 space-y-6">
-                    <h3 class="font-extrabold text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                        <i class="fas fa-comments text-brandBlue dark:text-amber-400"></i> Tanggapan & Komentar Warga (<span id="comment-count">0</span>)
-                    </h3>
-
-                    <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
-                        <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Tulis Komentar / Aspirasi</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="comment-name" placeholder="Nama Lengkap / Warga Kalurahan..." class="px-3 py-2 text-xs bg-white dark:bg-slate-800 border dark:border-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-brandBlue dark:text-white">
-                            <input type="text" id="comment-origin" placeholder="Asal Padukuhan / Instansi (Cth: Pakem Lor)..." class="px-3 py-2 text-xs bg-white dark:bg-slate-800 border dark:border-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-brandBlue dark:text-white">
-                        </div>
-                        <textarea id="comment-text" rows="2" placeholder="Tuliskan tanggapan, pertanyaan, atau masukan membangun..." class="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border dark:border-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-brandBlue dark:text-white"></textarea>
-                        <div class="flex justify-end">
-                            <button onclick="submitComment()" class="bg-brandBlue hover:bg-brandBlueDark text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow">
-                                Kirim Komentar
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="comments-list" class="space-y-3">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="login-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 max-w-md w-full rounded-3xl shadow-2xl p-6 border border-slate-200 dark:border-slate-700 space-y-6">
-            <div class="text-center space-y-2">
-                <div class="w-14 h-14 bg-brandBlue text-white rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-lg border-2 border-brandGold">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white">Otorisasi Studio CMS</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Masukkan sandi redaksi kalurahan untuk mengakses studio manajemen berita.</p>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Sandi Redaksi (Default: <code class="text-brandGold font-mono">admin123</code>)</label>
-                    <input type="password" id="cms-password-input" placeholder="Masukkan sandi..." class="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-700 dark:text-white border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandBlue">
-                </div>
-                <div id="login-error" class="hidden text-xs text-rose-600 font-bold text-center">
-                    Sandi salah! Silakan coba lagi (coba: admin123).
-                </div>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-                <button onclick="closeLoginModal()" class="w-1/2 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl hover:bg-slate-300 transition">
-                    Batal
-                </button>
-                <button onclick="verifyCmsLogin()" class="w-1/2 py-3 bg-brandBlue hover:bg-brandBlueDark text-white text-xs font-extrabold rounded-xl transition shadow">
-                    Masuk Studio
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-slate-700 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700 dark:border-slate-600">
-        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
-        <div>
-            <h4 id="toast-title" class="font-bold text-xs">Berhasil!</h4>
-            <p id="toast-msg" class="text-[11px] text-slate-300">Perubahan berhasil disimpan ke sistem.</p>
-        </div>
-    </div>
-
-    <footer class="bg-brandBlueDark text-white mt-12 border-t-4 border-brandGold py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-xs">
-            <div class="space-y-3 md:col-span-1">
-                <div class="flex items-center gap-2">
-                    <span class="text-xl font-black text-white tracking-tight">
-                        media<span class="text-brandGold">desa</span>online
-                    </span>
-                    <span class="bg-brandBlue text-white text-[10px] font-black px-1.5 py-0.5 rounded">DIY</span>
-                </div>
-                <p id="txt-footer-about" class="text-slate-300 leading-relaxed">
-                    Portal berita dan CMS mandiri khusus kalurahan dan kawasan pedesaan di Daerah Istimewa Yogyakarta. Transparan, akuntabel, dan menginspirasi.
-                </p>
-                <div class="flex space-x-3 text-sm pt-2">
-                    <a href="#" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-brandGold hover:text-slate-900 flex items-center justify-center transition"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-brandGold hover:text-slate-900 flex items-center justify-center transition"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-brandGold hover:text-slate-900 flex items-center justify-center transition"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-brandGold hover:text-slate-900 flex items-center justify-center transition"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-
-            <div>
-                <h4 id="txt-footer-nav" class="font-extrabold uppercase tracking-wider text-amber-300 mb-3 text-sm">Kategori Utama</h4>
-                <ul class="space-y-2 text-slate-300">
-                    <li><a href="#" onclick="switchCategory('Berita DIY'); return false;" class="hover:text-amber-300 transition">Berita DIY</a></li>
-                    <li><a href="#" onclick="switchCategory('Pemerintahan Desa'); return false;" class="hover:text-amber-300 transition">Pemerintahan Desa</a></li>
-                    <li><a href="#" onclick="switchCategory('Ekonomi & UMKM'); return false;" class="hover:text-amber-300 transition">Ekonomi & UMKM</a></li>
-                    <li><a href="#" onclick="switchCategory('Budaya & Wisata'); return false;" class="hover:text-amber-300 transition">Budaya & Wisata</a></li>
-                    <li><a href="#" onclick="switchCategory('Inspirasi Pembangunan'); return false;" class="hover:text-amber-300 transition">Inspirasi Pembangunan</a></li>
-                    <li><a href="#" onclick="switchCategory('Opini Warga'); return false;" class="hover:text-amber-300 transition">Opini Warga</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 id="txt-footer-links" class="font-extrabold uppercase tracking-wider text-amber-300 mb-3 text-sm">Jaringan Kalurahan DIY</h4>
-                <ul class="space-y-2 text-slate-300">
-                    <li><span class="text-white font-medium">• Portal Kalurahan Pakem Sleman</span></li>
-                    <li><span class="text-white font-medium">• Kalurahan Panggungharjo Bantul</span></li>
-                    <li><span class="text-white font-medium">• Kalurahan Bejiharjo Gunungkidul</span></li>
-                    <li><span class="text-white font-medium">• Kalurahan Banjarharjo Kulon Progo</span></li>
-                    <li><span class="text-white font-medium">• Kelurahan Kotagede Yogyakarta</span></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 id="txt-footer-contact" class="font-extrabold uppercase tracking-wider text-amber-300 mb-3 text-sm">Kantor Redaksi</h4>
-                <p class="text-slate-300 leading-relaxed space-y-2">
-                    <span class="block"><i class="fas fa-map-marker-alt text-brandGold me-1.5"></i> Jalan Kaliurang KM 10, Sleman, DIY</span>
-                    <span class="block"><i class="fas fa-envelope text-brandGold me-1.5"></i> mediadesaonline@gmail.com</span>
-                    <span class="block"><i class="fas fa-phone text-brandGold me-1.5"></i> 08551236277 (Layanan Warta)</span>
-                </p>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-blue-900 text-center text-slate-400 text-xs">
-            <p>&copy; 2026 Media Desa Online DIY. Hak Cipta Dilindungi Undang-Undang. Portal Warta Kalurahan & Studio CMS Terpadu.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Default Mock Data for DIY Rural News Portal
-        const defaultArticles = [
-            {
-                id: 'art-1',
-                title: 'Panen Raya Organik Kalurahan Pakem Sleman Hasilkan 12 Ton Gabah Berkualitas Tinggi',
-                category: 'Ekonomi & UMKM',
-                image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
-                author: 'Tim Warta Sleman',
-                date: '7 Agustus 2026',
-                summary: 'Kelompok tani Kalurahan Pakem sukses menggelar panen raya padi organik dengan sistem SRI (System of Rice Intensification) yang didukung penuh oleh Dana Desa.',
-                content: 'Kelompok Tani Tulus Makmur di Kalurahan Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta, kembali mencatatkan prestasi membanggakan dengan suksesnya panen raya padi organik seluas 15 hektar. Menggunakan metode ramah lingkungan tanpa pupuk kimia sintetis, hasil ubinan menunjukkan peningkatan produktivitas hingga 25 persen dibanding tahun sebelumnya.\n\nLurah Pakem, H. Kunto Harjono, menyampaikan bahwa keberhasilan ini merupakan hasil konsistensi para petani dalam menjaga kesuburan tanah lereng Gunung Merapi serta pendampingan intensif dari dinas pertanian kabupaten. "Padi organik Pakem kini telah memiliki sertifikasi standar nasional dan mulai dipasarkan ke berbagai pusat perbelanjaan di Kota Yogyakarta hingga Solo," ujarnya penuh antusias.\n\nSelain meningkatkan kesejahteraan petani lokal, program ketahanan pangan berbasis organik ini juga menjadi daya tarik wisata edukasi pertanian (agrowisata) baru bagi wisatawan domestik maupun mancanegara yang berkunjung ke kawasan lereng Merapi.',
-                isPublished: true,
-                isFeatured: true,
-                views: 1420,
-                comments: [
-                    { name: 'Bpk. Sugeng', origin: 'Pakem Tegal', text: 'Mantap sekali! Semoga harga jual gabah organik petani semakin mensejahterakan warga.', date: '7 Agustus 2026' },
-                    { name: 'Siti Rahma', origin: 'Universitas Gadjah Mada', text: 'Sangat inspiratif, apakah ada program magang riset untuk mahasiswa pertanian di sini?', date: '7 Agustus 2026' }
-                ]
-            },
-            {
-                id: 'art-2',
-                title: 'Desa Wisata Nglanggeran Gunungkidul Kembali Raih Penghargaan Internasional Inovasi Kampung',
-                category: 'Budaya & Wisata',
-                image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-                author: 'Agung Nugroho',
-                date: '6 Agustus 2026',
-                summary: 'Kawasan ekowisata Gunung Api Purba Nglanggeran di Kabupaten Gunungkidul dinobatkan sebagai teladan tata kelola desa wisata berkelanjutan tingkat Asia.',
-                content: 'Prestasi gemilang kembali ditorehkan oleh masyarakat Kalurahan Nglanggeran, Patuk, Kabupaten Gunungkidul. Desa wisata yang terkenal dengan keindahan gugusan batu purba dan embung air di atas bukit ini dianugerahi predikat Desa Wisata Berkelanjutan Terbaik se-Asia Tenggara dalam ajang penganugerahan pariwisata regional.\n\nKeberhasilan ini dicapai berkat konsistensi warga desa dalam menerapkan konsep _community based tourism_ di mana seluruh pengelolaan homestay, kuliner tradisional, seni pertunjukan bregada, hingga konservasi alam dikelola langsung oleh Badan Usaha Milik Kalurahan (BUMKal).\n\nMenteri Pariwisata yang hadir secara virtual mengapresiasi gotong royong warga Nglanggeran yang mampu bangkit pasca-pandemi dan terus berinovasi memanfaatkan teknologi digital untuk reservasi wisatawan.',
-                isPublished: true,
-                isFeatured: false,
-                views: 980,
-                comments: [
-                    { name: 'Dian Kusuma', origin: 'Bantul', text: 'Bangga sekali dengan pariwisata Gunungkidul! Suasananya selalu ngangenin.', date: '6 Agustus 2026' }
-                ]
-            },
-            {
-                id: 'art-3',
-                title: 'Transformasi Digital Kalurahan Panggungharjo Bantul Masuk 3 Besar Pelayanan Publik Terbaik Nasional',
-                category: 'Pemerintahan Desa',
-                image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
-                author: 'Rr. Indah Lestari',
-                date: '5 Agustus 2026',
-                summary: 'Sistem layanan mandiri warga berbasis aplikasi mobile dan anjungan Dukcapil mandiri di Panggungharjo pangkas birokrasi surat menyurat hingga 90 persen.',
-                content: 'Kalurahan Panggungharjo, Sewon, Kabupaten Bantul, kembali membuktikan diri sebagai pelopor transparansi birokrasi desa di Indonesia. Melalui inovasi aplikasi layanan warga terpadu "Panggungharjo Smart Village", warga kini dapat mengurus surat pengantar nikah, SKTM, hingga pelaporan kependudukan langsung dari smartphone tanpa harus mengantre lama di kantor kalurahan.\n\nLurah Panggungharjo menjelaskan bahwa digitalisasi ini bertujuan mewujudkan birokrasi yang bersih, cepat, dan akuntabel. Seluruh transparansi keuangan Anggaran Pendapatan dan Belanja Kalurahan (APBKal) juga dipampang secara real-time di layar sentuh balai kalurahan serta website resmi.\n\nInovasi ini mengantarkan Panggungharjo meraih penghargaan prestisius dari Kementerian Pendayagunaan Aparatur Negara dan Reformasi Birokrasi (KemenPAN-RB).',
-                isPublished: true,
-                isFeatured: false,
-                views: 1150,
-                comments: []
-            },
-            {
-                id: 'art-4',
-                title: 'Festival Kesenian Rakyat Jathilan Rebut Perhatian Ribuan Wisatawan di Alun-Alun Kulon Progo',
-                category: 'Budaya & Wisata',
-                image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-                author: 'Ki Hadi Suwito',
-                date: '4 Agustus 2026',
-                summary: 'Pentas kolosal 25 grup kesenian tradisi jathilan dari berbagai kapanewon di Kulon Progo meriahkan peringatan bulan kebudayaan istimewa DIY.',
-                content: 'Semarak seni budaya tradisional terasa begitu kuat di Kabupaten Kulon Progo akhir pekan ini. Festival Jathilan Kolosal yang digelar atas kerjasama Dinas Kebudayaan DIY dan Forum Pamong Kalurahan berhasil menyedot perhatian ribuan penonton yang memadati Alun-Alun Wates.\n\nGelaran ini tidak hanya menampilkan atraksi tari kepang yang dinamis dan mistis, tetapi juga dibarengi dengan bazar UMKM produk olahan pangan lokal seperti gula semut menoreh, geblek crispy, dan batik ecoprint khas pedesaan.',
-                isPublished: true,
-                isFeatured: false,
-                views: 730,
-                comments: []
-            },
-            {
-                id: 'art-5',
-                title: 'Program Padat Karya Tunai Desa (PKTD) Saluran Irigasi Sawah di Bantul Serap 250 Pekerja Lokal',
-                category: 'Inspirasi Pembangunan',
-                image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
-                author: 'Tim Warta Bantul',
-                date: '3 Agustus 2026',
-                summary: 'Pembangunan infrastruktur perdesaan menggunakan skema upah harian langsung tunai terbukti ampuh mendongkrak daya beli masyarakat pasca musim tanam.',
-                content: 'Pemerintah Kalurahan di Kabupaten Bantul mengoptimalkan penggunaan Dana Desa untuk program Padat Karya Tunai Desa (PKTD) dengan fokus pengerukan dan normalisasi saluran irigasi pertanian sekunder.\n\nProgram ini melibatkan sedikitnya 250 tenaga kerja lokal dari kalangan warga prasejahtera dan petani penggarap. Selain memperlancar distribusi air ke 100 hektar lahan sawah tadah hujan, upah harian yang dibayarkan langsung setiap pekan mendongkrak perekonomian tingkat rukun tetangga.',
-                isPublished: true,
-                isFeatured: false,
-                views: 640,
-                comments: []
-            },
-            {
-                id: 'art-6',
-                title: 'Pelatihan Ekspor Digital bagi Pelaku UMKM Kerajinan Bambu Sentolo Kulon Progo',
-                category: 'Ekonomi & UMKM',
-                image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80',
-                author: 'Rina Kartika',
-                date: '2 Agustus 2026',
-                summary: 'Puluhan perajin anyaman bambu di Sentolo dilatih teknik pengemasan standar ekspor dan pemasaran lintas negara melalui platform e-commerce global.',
-                content: 'Potensi kerajinan bambu asal Kapanewon Sentolo, Kulon Progo, kini bersiap merambah pasar global. Dinas Koperasi dan UMKM DIY bersama pemerintah kalurahan setempat menggelar workshop intensif tentang digital marketing dan standar ekspor internasional.\n\nProduk furnitur dan dekorasi rumah dari bambu olahan Sentolo dinilai memiliki kualitas seni tinggi yang diminati pasar Eropa dan Amerika. Melalui pelatihan ini, perajin lokal diajarkan cara mengurus dokumen ekspor dan negosiasi digital.',
-                isPublished: true,
-                isFeatured: false,
-                views: 520,
-                comments: []
-            },
-            {
-                id: 'art-7',
-                title: 'Catatan Warga: Menjaga Gotong Royong di Era Digital Kalurahan',
-                category: 'Opini Warga',
-                image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
-                author: 'Bambang Margono',
-                date: '7 Agustus 2026',
-                summary: 'Refleksi warga tentang bagaimana teknologi modern dan aplikasi kalurahan pintar tidak boleh mengikis tradisi sambatan dan gugur gunung.',
-                content: 'Perkembangan teknologi dan sistem informasi desa yang kian canggih di Daerah Istimewa Yogyakarta patut disyukuri. Warga kini tidak perlu repot mengantre berjam-jam untuk mengurus administrasi kependudukan. Namun di balik kemudahan digital tersebut, ada nilai luhur yang senantiasa harus dijaga: gotong royong dan tradisi sambatan.\n\nTeknologi selayaknya menjadi alat bantu untuk mempercepat birokrasi, bukan sebaliknya, membuat interaksi sosial antarwarga di tingkat padukuhan menjadi renggang. Silahturahmi di gardu ronda, arisan RT, dan kerja bakti membersihkan saluran air tetap menjadi fondasi utama ketahanan sosial pedesaan kita.',
-                isPublished: true,
-                isFeatured: false,
-                views: 410,
-                comments: []
-            }
-        ];
-
-        // Testimonials data
-        const testimonials = [
-            {
-                quote: "Media Desa Online menjadi wadah transparansi dan jembatan informasi yang sangat efektif antara pemerintah kalurahan dan warga masyarakat.",
-                name: "H. Kunto Harjono",
-                role: "Lurah Kalurahan Pakem, Sleman",
-                avatar: "KH"
-            },
-            {
-                quote: "Dengan adanya portal berita desa ini, potensi wisata dan produk UMKM lokal kami di Gunungkidul semakin dikenal luas hingga mancanegara.",
-                name: "Sartono, S.Sos",
-                role: "Ketua BUMKal Nglanggeran",
-                avatar: "ST"
-            },
-            {
-                quote: "Publikasi pembangunan kalurahan yang transparan sangat membantu akuntabilitas dana desa dan meningkatkan partisipasi aktif warga.",
-                name: "Dr. Dra. Hj. Nur Aisyah",
-                role: "Pengamat Pemerintahan Desa DIY",
-                avatar: "NA"
-            }
-        ];
-        let currentTestimonialIndex = 0;
-
-        // Multilingual Dictionary
-        const translations = {
-            id: {
-                tagline: "AKTUAL • INSPIRATIF • TERPERCAYA",
-                brandSub: "DIY Dan Sekitarnya",
-                btnCms: "Masuk Studio CMS Admin",
-                activeRedaction: "Redaksi Aktif",
-                breakingLabel: "Terkini",
-                catSemua: "Semua Berita",
-                catBeritaDIY: "Berita DIY",
-                catPemerintahan: "Pemerintahan Desa",
-                catEkonomi: "Ekonomi & UMKM",
-                catBudaya: "Budaya & Wisata",
-                catInspirasi: "Inspirasi Pembangunan",
-                catOpini: "Opini Warga",
-                currentCategoryLabel: "Semua Berita Desa",
-                emptyTitle: "Belum Ada Artikel Berita",
-                emptyDesc: "Gunakan Studio CMS Admin untuk membuat atau mengedit berita pertama Anda.",
-                emptyBtn: "Buka Studio CMS",
-                testimonialTitle: "Testimoni Tokoh",
-                redactionTitle: "Redaksi Media Desa Online",
-                redactionDesc: "Menyajikan kabar pembangunan kalurahan, inovasi desa, potensi wisata, dan kearifan lokal masyarakat Yogyakarta.",
-                trendingTitle: "Terpopuler Hari Ini",
-                coverageTitle: "Cakupan Wilayah DIY",
-                cmsBadge: "Studio CMS Redaksi",
-                cmsTitle: "Kelola & Terbitkan Berita Kalurahan",
-                cmsSubtitle: "Tambah artikel baru, edit konten terpublikasi, atau ubah status draf.",
-                btnLogout: "Keluar Admin",
-                btnNew: "Tulis Berita Baru",
-                btnBackup: "Backup",
-                stat1: "Total Artikel",
-                stat2: "Terpublikasi",
-                stat3: "Draf / Simpanan",
-                stat4: "Total Pembaca",
-                footerAbout: "Portal berita dan CMS mandiri khusus kalurahan dan kawasan pedesaan di Daerah Istimewa Yogyakarta. Transparan, akuntabel, dan menginspirasi.",
-                footerNav: "Kategori Utama",
-                footerLinks: "Jaringan Kalurahan DIY",
-                footerContact: "Kantor Redaksi"
-            },
-            en: {
-                tagline: "ACTUAL • INSPIRATIONAL • TRUSTED",
-                brandSub: "DIY & Surroundings",
-                btnCms: "Enter Admin CMS Studio",
-                activeRedaction: "Active Editorial",
-                breakingLabel: "Breaking",
-                catSemua: "All News",
-                catBeritaDIY: "DIY News",
-                catPemerintahan: "Village Governance",
-                catEkonomi: "Economy & SMEs",
-                catBudaya: "Culture & Tourism",
-                catInspirasi: "Development Inspiration",
-                catOpini: "Citizen Opinion",
-                currentCategoryLabel: "All Village Articles",
-                emptyTitle: "No News Articles Found",
-                emptyDesc: "Use the CMS Admin Studio to create or edit your first article.",
-                emptyBtn: "Open CMS Studio",
-                testimonialTitle: "Figure Testimonial",
-                redactionTitle: "Media Desa Online Editorial",
-                redactionDesc: "Presenting village development news, grassroots innovations, tourism potentials, and local wisdom of Yogyakarta.",
-                trendingTitle: "Trending Today",
-                coverageTitle: "DIY Regional Coverage",
-                cmsBadge: "Editorial CMS Studio",
-                cmsTitle: "Manage & Publish Village News",
-                cmsSubtitle: "Add new articles, edit published content, or update draft statuses.",
-                btnLogout: "Admin Logout",
-                btnNew: "Write New Article",
-                btnBackup: "Backup",
-                stat1: "Total Articles",
-                stat2: "Published",
-                stat3: "Drafts",
-                stat4: "Total Readers",
-                footerAbout: "Independent news portal and CMS dedicated to villages and rural areas in Special Region of Yogyakarta. Transparent, accountable, and inspiring.",
-                footerNav: "Main Categories",
-                footerLinks: "DIY Village Network",
-                footerContact: "Editorial Office"
-            },
-            jv: {
-                tagline: "AKTUAL • MINGGUNI • PINACARYA",
-                brandSub: "DIY Lan Sekiteripun",
-                btnCms: "Mlebet Studio CMS Admin",
-                activeRedaction: "Redaksi Aktif",
-                breakingLabel: "Kabardipun",
-                catSemua: "Sedaya Warta",
-                catBeritaDIY: "Warta DIY",
-                catPemerintahan: "Pamaréntahan Kalurahan",
-                catEkonomi: "Ékonomi & UMKM",
-                catBudaya: "Budaya & Pariwisata",
-                catInspirasi: "Inspirasi Mbangun",
-                catOpini: "Penggalih Warga",
-                currentCategoryLabel: "Sedaya Warta Kalurahan",
-                emptyTitle: "Dereng Wonten Artikel Warta",
-                emptyDesc: "Gunakaken Studio CMS Admin kangge damel utawi ngéwahi warta kapisan panjenengan.",
-                emptyBtn: " Bikak Studio CMS",
-                testimonialTitle: "Testimoni Tokoh",
-                redactionTitle: "Redaksi Media Desa Online",
-                redactionDesc: "Nyuguhaken kabar pembangunan kalurahan, inovasi desa, potensi pariwisata, lan kearifan lokal masarakat Yogyakarta.",
-                trendingTitle: "Ingkang Kasebar Dinten Punika",
-                coverageTitle: "Wewengkon DIY",
-                cmsBadge: "Studio CMS Redaksi",
-                cmsTitle: "Ngelola & Terbitaken Warta Kalurahan",
-                cmsSubtitle: "Tambah artikel enggal, éwah konten terbit, utawi ganti status draf.",
-                btnLogout: "Metu Admin",
-                btnNew: "Nyerat Warta Enggal",
-                btnBackup: "Backup",
-                stat1: "Cacah Artikel",
-                stat2: "Sampun Terbit",
-                stat3: "Simpenan (Draf)",
-                stat4: "Cacah Maos",
-                footerAbout: "Portal warta lan CMS mandhiri khusus kalurahan lan pedesaan ing Daerah Istimewa Yogyakarta. Transparan, akuntabel, lan ngremenaken.",
-                footerNav: "Kategori Utami",
-                footerLinks: "Jaringan Kalurahan DIY",
-                footerContact: "Kantor Redaksi"
-            }
-        };
-
-        let currentLang = 'id';
-        let currentCategory = 'Semua';
-        let searchQuery = '';
-        let currentView = 'portal'; // 'portal' or 'cms'
-        let currentActiveArticleId = null;
-
-        // LocalStorage Init
-        function getStoredArticles() {
-            const stored = localStorage.getItem('mediadesa_articles');
-            if (stored) {
-                try { return JSON.parse(stored); } catch(e) { return defaultArticles; }
-            }
-            return defaultArticles;
-        }
-
-        function saveStoredArticles(articles) {
-            localStorage.setItem('mediadesa_articles', JSON.stringify(articles));
-        }
-
-        let articles = getStoredArticles();
-
-        // Initialize App on Window Load
-        window.onload = function() {
-            updateDateDisplay();
-            renderCategoriesNav();
-            renderPortalContent();
-            renderTicker();
-            updateStats();
-            
-            // Check if user was in CMS mode
-            if (localStorage.getItem('mediadesa_view') === 'cms') {
-                if (localStorage.getItem('mediadesa_logged') === 'true') {
-                    currentView = 'cms';
-                    document.getElementById('view-portal').classList.add('hidden');
-                    document.getElementById('view-cms').classList.remove('hidden');
-                    document.getElementById('view-toggle-text').innerText = 'Kembali ke Portal Berita';
-                    renderCmsTable();
-                }
-            }
-        };
-
-        function updateDateDisplay() {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const today = new Date().toLocaleDateString('id-ID', options);
-            document.getElementById('current-date-display').innerText = today;
-        }
-
-        // Language Switcher Function
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            document.getElementById('txt-tagline').innerText = t.tagline;
-            document.getElementById('txt-brand-sub').innerText = t.brandSub;
-            document.getElementById('view-toggle-text').innerText = (currentView === 'portal') ? t.btnCms : 'Kembali ke Portal Berita';
-            document.getElementById('txt-active-redaction').innerText = t.activeRedaction;
-            document.getElementById('txt-breaking-label').innerHTML = `<i class="fas fa-bullhorn me-1"></i> ${t.breakingLabel}`;
-            document.getElementById('current-category-label').innerText = currentCategory === 'Semua' ? t.currentCategoryLabel : currentCategory;
-            document.getElementById('txt-empty-title').innerText = t.emptyTitle;
-            document.getElementById('txt-empty-desc').innerText = t.emptyDesc;
-            document.getElementById('txt-empty-btn').innerText = t.emptyBtn;
-            document.getElementById('txt-testimonial-title').innerText = t.testimonialTitle;
-            document.getElementById('txt-redaction-title').innerText = t.redactionTitle;
-            document.getElementById('txt-redaction-desc').innerText = t.redactionDesc;
-            document.getElementById('txt-trending-title').innerText = t.trendingTitle;
-            document.getElementById('txt-coverage-title').innerText = t.coverageTitle;
-            document.getElementById('txt-cms-badge').innerText = t.cmsBadge;
-            document.getElementById('txt-cms-title').innerText = t.cmsTitle;
-            document.getElementById('txt-cms-subtitle').innerText = t.cmsSubtitle;
-            document.getElementById('txt-btn-logout').innerText = t.btnLogout;
-            document.getElementById('txt-btn-new').innerText = t.btnNew;
-            document.getElementById('txt-btn-backup').innerText = t.btnBackup;
-            document.getElementById('txt-stat-1').innerText = t.stat1;
-            document.getElementById('txt-stat-2').innerText = t.stat2;
-            document.getElementById('txt-stat-3').innerText = t.stat3;
-            document.getElementById('txt-stat-4').innerText = t.stat4;
-            document.getElementById('txt-footer-about').innerText = t.footerAbout;
-            document.getElementById('txt-footer-nav').innerText = t.footerNav;
-            document.getElementById('txt-footer-links').innerText = t.footerLinks;
-            document.getElementById('txt-footer-contact').innerText = t.footerContact;
-
-            renderCategoriesNav();
-            renderPortalContent();
-        }
-
-        // Dark / Light Mode Toggle
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.setItem('mediadesa_theme', 'light');
-                themeIcon.className = 'fas fa-moon';
-                themeText.innerText = 'Gelap';
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('mediadesa_theme', 'dark');
-                themeIcon.className = 'fas fa-sun';
-                themeText.innerText = 'Terang';
-            }
-        }
-
-        // View Toggle (Portal vs CMS)
-        function toggleView() {
-            if (currentView === 'portal') {
-                // Require login if not logged in
-                if (localStorage.getItem('mediadesa_logged') !== 'true') {
-                    document.getElementById('login-modal').classList.remove('hidden');
-                    return;
-                }
-                switchToCmsView();
-            } else {
-                switchToPortalView();
-            }
-        }
-
-        function switchToCmsView() {
-            currentView = 'cms';
-            localStorage.setItem('mediadesa_view', 'cms');
-            document.getElementById('view-portal').classList.add('hidden');
-            document.getElementById('view-cms').classList.remove('hidden');
-            document.getElementById('view-toggle-text').innerText = translations[currentLang].currentCategoryLabel.includes('Warta') ? 'Mulih dinten' : 'Kembali ke Portal Berita';
-            renderCmsTable();
-            updateStats();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function switchToPortalView() {
-            currentView = 'portal';
-            localStorage.setItem('mediadesa_view', 'portal');
-            document.getElementById('view-cms').classList.add('hidden');
-            document.getElementById('view-portal').classList.remove('hidden');
-            document.getElementById('view-toggle-text').innerText = translations[currentLang].btnCms;
-            renderPortalContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function verifyCmsLogin() {
-            const pass = document.getElementById('cms-password-input').value;
-            if (pass === 'admin123') {
-                localStorage.setItem('mediadesa_logged', 'true');
-                document.getElementById('login-modal').classList.add('hidden');
-                document.getElementById('cms-password-input').value = '';
-                document.getElementById('login-error').classList.add('hidden');
-                showToast('Login Berhasil', 'Selamat datang di Studio CMS Redaksi Kalurahan.', 'success');
-                switchToCmsView();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        }
-
-        function closeLoginModal() {
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('cms-password-input').value = '';
-            document.getElementById('login-error').classList.add('hidden');
-        }
-
-        function logoutCms() {
-            localStorage.setItem('mediadesa_logged', 'false');
-            localStorage.removeItem('mediadesa_view');
-            showToast('Keluar Sesi', 'Anda telah keluar dari Studio CMS.', 'info');
-            switchToPortalView();
-        }
-
-        // Render Categories Navigation
-        function renderCategoriesNav() {
-            const categories = ['Semua', 'Berita DIY', 'Pemerintahan Desa', 'Ekonomi & UMKM', 'Budaya & Wisata', 'Inspirasi Pembangunan', 'Opini Warga'];
-            const container = document.getElementById('category-nav-container');
-            container.innerHTML = '';
-
-            categories.forEach(cat => {
-                const isActive = (currentCategory === cat);
-                let label = cat;
-                if (currentLang === 'en') {
-                    if (cat === 'Semua') label = 'All News';
-                    if (cat === 'Berita DIY') label = 'DIY News';
-                    if (cat === 'Pemerintahan Desa') label = 'Gov & Village';
-                    if (cat === 'Ekonomi & UMKM') label = 'Economy & SMEs';
-                    if (cat === 'Budaya & Wisata') label = 'Culture & Tourism';
-                    if (cat === 'Inspirasi Pembangunan') label = 'Development';
-                    if (cat === 'Opini Warga') label = 'Citizen Opinion';
-                } else if (currentLang === 'jv') {
-                    if (cat === 'Semua') label = 'Sedaya Warta';
-                    if (cat === 'Berita DIY') label = 'Warta DIY';
-                    if (cat === 'Pemerintahan Desa') label = 'Pamaréntahan';
-                    if (cat === 'Ekonomi & UMKM') label = 'Ékonomi UMKM';
-                    if (cat === 'Budaya & Wisata') label = 'Budaya Wisata';
-                    if (cat === 'Inspirasi Pembangunan') label = 'Mbangun';
-                    if (cat === 'Opini Warga') label = 'Penggalih Warga';
-                }
-
-                const btn = document.createElement('button');
-                btn.onclick = () => switchCategory(cat);
-                btn.className = `px-3.5 py-2.5 rounded-lg whitespace-nowrap transition flex items-center gap-1.5 font-bold text-xs ${
-                    isActive ? 'bg-brandGold text-slate-900 shadow' : 'hover:bg-blue-700 text-white'
-                }`;
-                btn.innerHTML = `<i class="fas ${cat === 'Semua' ? 'fa-globe' : 'fa-hashtag'}"></i> ${label}`;
-                container.appendChild(btn);
-            });
-        }
-
-        function switchCategory(cat) {
-            currentCategory = cat;
-            renderCategoriesNav();
-            renderPortalContent();
-            document.getElementById('current-category-label').innerText = cat === 'Semua' ? translations[currentLang].currentCategoryLabel : cat;
-        }
-
-        // Render News Ticker
-        function renderTicker() {
-            const published = articles.filter(a => a.isPublished);
-            const tickerContainer = document.getElementById('ticker-content');
-            if (published.length === 0) {
-                tickerContainer.innerHTML = '<span class="mx-4">Belum ada warta terkini.</span>';
-                return;
-            }
-            let html = '';
-            published.slice(0, 5).forEach(art => {
-                html += `<span class="mx-6 cursor-pointer hover:underline text-brandBlue dark:text-amber-400 font-bold" onclick="openArticleModal('${art.id}')"><i class="fas fa-circle text-[6px] text-brandGold me-2"></i>${art.title}</span>`;
-            });
-            tickerContainer.innerHTML = html;
-        }
-
-        // Render Portal Content (Featured + Grid + Trending)
-        function renderPortalContent() {
-            let filtered = articles.filter(a => a.isPublished);
-
-            if (currentCategory !== 'Semua') {
-                filtered = filtered.filter(a => a.category === currentCategory);
-            }
-
-            if (searchQuery.trim() !== '') {
-                const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(a => a.title.toLowerCase().includes(q) || a.summary.toLowerCase().includes(q) || a.content.toLowerCase().includes(q));
-            }
-
-            const mainHeadlineContainer = document.getElementById('main-headline-container');
-            const subHeadlinesContainer = document.getElementById('sub-headlines-container');
-            const articlesGrid = document.getElementById('articles-grid');
-            const emptyState = document.getElementById('empty-state');
-            const articleCountBadge = document.getElementById('article-count-badge');
-
-            articleCountBadge.innerText = `${filtered.length} Artikel`;
-
-            if (filtered.length === 0) {
-                mainHeadlineContainer.innerHTML = '';
-                subHeadlinesContainer.innerHTML = '';
-                articlesGrid.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                renderTrendingList();
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-
-            // Find main headline (featured or first)
-            let featuredArt = filtered.find(a => a.isFeatured) || filtered[0];
-            let remaining = filtered.filter(a => a.id !== featuredArt.id);
-
-            // Render Main Headline
-            mainHeadlineContainer.innerHTML = `
-                <div onclick="openArticleModal('${featuredArt.id}')" class="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 cursor-pointer flex flex-col h-full hover:shadow-xl transition">
-                    <div class="relative h-64 md:h-80 overflow-hidden bg-slate-200 dark:bg-slate-700">
-                        <img src="${featuredArt.image}" alt="${featuredArt.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/800x400/004aad/ffffff?text=Media+Desa+Online'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute top-4 left-4 flex gap-2">
-                            <span class="bg-brandGold text-slate-900 font-extrabold text-xs px-3 py-1 rounded-full shadow uppercase">${featuredArt.category}</span>
-                            <span class="bg-amber-500 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow flex items-center gap-1"><i class="fas fa-star"></i> Headline Utama</span>
-                        </div>
-                        <div class="absolute bottom-4 left-4 right-4 text-white space-y-2">
-                            <div class="flex items-center gap-3 text-xs text-blue-200">
-                                <span><i class="far fa-calendar-alt me-1"></i> ${featuredArt.date}</span>
-                                <span>•</span>
-                                <span><i class="far fa-user me-1"></i> ${featuredArt.author}</span>
-                            </div>
-                            <h2 class="text-xl md:text-2xl font-black leading-snug group-hover:text-amber-300 transition line-clamp-2">
-                                ${featuredArt.title}
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="p-5 flex flex-col justify-between flex-grow bg-white dark:bg-slate-800">
-                        <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed mb-4">
-                            ${featuredArt.summary}
-                        </p>
-                        <div class="flex items-center justify-between text-xs font-bold text-brandBlue dark:text-amber-400 pt-3 border-t dark:border-slate-700">
-                            <span class="flex items-center gap-1"><i class="fas fa-eye"></i> ${featuredArt.views} Pembaca</span>
-                            <span class="group-hover:translate-x-1 transition flex items-center gap-1">Baca Selengkapnya <i class="fas fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Side Cards (Kanan) -->
+                <div class="space-y-4 flex flex-col justify-between">
             `;
 
-            // Render Sub Headlines (top 2 remaining)
-            let subHtml = '';
-            remaining.slice(0, 2).forEach(art => {
-                subHtml += `
-                    <div onclick="openArticleModal('${art.id}')" class="group bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer flex gap-4 items-center hover:shadow-md transition">
-                        <div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-700">
-                            <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/300x200/004aad/ffffff?text=Desa'">
-                        </div>
-                        <div class="space-y-1.5 flex-grow">
-                            <span class="text-[10px] bg-brandBlue/10 dark:bg-brandBlue/30 text-brandBlue dark:text-amber-300 font-extrabold px-2 py-0.5 rounded">${art.category}</span>
-                            <h3 class="font-extrabold text-xs md:text-sm text-slate-800 dark:text-slate-100 line-clamp-2 group-hover:text-brandBlue transition">
-                                ${art.title}
-                            </h3>
-                            <div class="flex items-center gap-3 text-[10px] text-slate-400">
-                                <span><i class="far fa-calendar-alt me-1"></i> ${art.date}</span>
-                                <span><i class="fas fa-eye ms-1"></i> ${art.views}</span>
+            if (sideNews.length > 0) {
+                sideNews.forEach(item => {
+                    headlineHtml += `
+                        <div class="bg-darkCard border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition cursor-pointer flex flex-col justify-between" onclick="bukaBerita('${item.id}')">
+                            <div class="space-y-2">
+                                <span class="bg-blue-900/60 text-blue-300 border border-blue-700/50 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">
+                                    ${escapeHtml(item.kategori || 'Umum')}
+                                </span>
+                                <h4 class="text-sm font-bold text-white hover:text-amber-300 transition line-clamp-2">
+                                    ${escapeHtml(item.judul)}
+                                </h4>
+                            </div>
+                            <div class="mt-3 text-[11px] text-slate-400 flex justify-between items-center">
+                                <span><i class="far fa-calendar-alt me-1"></i>${escapeHtml(item.tanggal || '')}</span>
+                                <span><i class="far fa-eye me-1"></i> 15</span>
                             </div>
                         </div>
-                    </div>
-                `;
-            });
-            subHeadlinesContainer.innerHTML = subHtml;
-
-            // Render remaining articles in grid
-            let gridHtml = '';
-            remaining.slice(2).forEach(art => {
-                gridHtml += `
-                    <div onclick="openArticleModal('${art.id}')" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer flex flex-col justify-between hover:shadow-md transition">
-                        <div>
-                            <div class="relative h-44 overflow-hidden bg-slate-200 dark:bg-slate-700">
-                                <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/004aad/ffffff?text=Desa'">
-                                <span class="absolute top-3 left-3 bg-brandBlue text-white font-bold text-[10px] px-2.5 py-1 rounded-md shadow">${art.category}</span>
-                            </div>
-                            <div class="p-4 space-y-2">
-                                <div class="flex items-center gap-3 text-[11px] text-slate-400">
-                                    <span><i class="far fa-calendar-alt me-1"></i> ${art.date}</span>
-                                    <span>•</span>
-                                    <span><i class="far fa-user me-1"></i> ${art.author}</span>
-                                </div>
-                                <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 line-clamp-2 group-hover:text-brandBlue transition">
-                                    ${art.title}
-                                </h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                                    ${art.summary}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="p-4 pt-0 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 border-t dark:border-slate-700/60 mt-3">
-                            <span class="flex items-center gap-1"><i class="fas fa-eye text-brandBlue"></i> ${art.views} Pembaca</span>
-                            <span class="text-brandBlue dark:text-amber-400 font-bold group-hover:translate-x-1 transition flex items-center gap-1">Detail <i class="fas fa-chevron-right text-[10px]"></i></span>
-                        </div>
-                    </div>
-                `;
-            });
-            articlesGrid.innerHTML = gridHtml;
-
-            renderTrendingList();
-        }
-
-        function renderTrendingList() {
-            const published = articles.filter(a => a.isPublished);
-            const sorted = [...published].sort((a, b) => b.views - a.views);
-            const trendingList = document.getElementById('trending-list');
-            let html = '';
-
-            sorted.slice(0, 4).forEach((art, idx) => {
-                html += `
-                    <div onclick="openArticleModal('${art.id}')" class="flex items-start gap-3 cursor-pointer group pb-3 border-b dark:border-slate-700/60 last:border-0 last:pb-0">
-                        <span class="w-7 h-7 rounded-xl bg-brandGold/20 text-brandGoldDark dark:text-amber-400 font-black text-xs flex items-center justify-center shrink-0 border border-brandGold/40">${idx + 1}</span>
-                        <div class="space-y-1">
-                            <h4 class="font-extrabold text-xs text-slate-800 dark:text-slate-200 line-clamp-2 group-hover:text-brandBlue transition">
-                                ${art.title}
-                            </h4>
-                            <span class="text-[10px] text-slate-400 flex items-center gap-2">
-                                <span><i class="far fa-calendar-alt me-1"></i> ${art.date}</span>
-                                <span><i class="fas fa-eye text-brandBlue me-1"></i> ${art.views}</span>
-                            </span>
-                        </div>
-                    </div>
-                `;
-            });
-            trendingList.innerHTML = html;
-        }
-
-        function handleSearch() {
-            searchQuery = document.getElementById('search-input').value;
-            renderPortalContent();
-        }
-
-        // Article Modal Reader
-        function openArticleModal(id) {
-            const art = articles.find(a => a.id === id);
-            if (!art) return;
-
-            currentActiveArticleId = id;
-            // Increment views
-            art.views += 1;
-            saveStoredArticles(articles);
-            updateStats();
-
-            document.getElementById('modal-category').innerText = art.category;
-            document.getElementById('modal-date').innerText = art.date;
-            document.getElementById('modal-title').innerText = art.title;
-            document.getElementById('modal-author').innerText = art.author;
-            document.getElementById('modal-author-avatar').innerText = art.author.charAt(0).toUpperCase();
-            document.getElementById('modal-views').innerText = art.views;
-            document.getElementById('modal-image').src = art.image;
-            document.getElementById('modal-image').onerror = function() { this.src='https://placehold.co/800x400/004aad/ffffff?text=Media+Desa+Online'; };
-
-            // Format paragraphs
-            const paragraphs = art.content.split('\n\n');
-            let contentHtml = '';
-            paragraphs.forEach(p => {
-                if (p.trim() !== '') {
-                    contentHtml += `<p class="leading-relaxed">${p}</p>`;
-                }
-            });
-            document.getElementById('modal-content').innerHTML = contentHtml;
-
-            renderComments(art);
-
-            document.getElementById('article-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeArticleModal() {
-            document.getElementById('article-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            renderPortalContent();
-        }
-
-        function shareArticle() {
-            const art = articles.find(a => a.id === currentActiveArticleId);
-            if (!art) return;
-            const text = `Baca warta menarik ini: "${art.title}" di Media Desa Online DIY.`;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(window.location.href + '#' + art.id).then(() => {
-                    showToast('Berhasil Disalin!', 'Tautan artikel telah disalin ke clipboard.', 'success');
+                    `;
                 });
             } else {
-                showToast('Dibagikan', text, 'info');
-            }
-        }
-
-        // Comment System
-        function renderComments(art) {
-            const container = document.getElementById('comments-list');
-            const countBadge = document.getElementById('comment-count');
-            const list = art.comments || [];
-            countBadge.innerText = list.length;
-
-            if (list.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada tanggapan. Jadilah yang pertama memberikan masukan!</p>`;
-                return;
+                headlineHtml += `<div class="bg-darkCard border border-slate-800 rounded-2xl p-5 text-center text-xs text-slate-500">Belum ada berita sampingan.</div>`;
             }
 
-            let html = '';
-            list.forEach(c => {
-                html += `
-                    <div class="bg-slate-50 dark:bg-slate-700/30 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
-                        <div class="flex items-center justify-between">
-                            <span class="font-extrabold text-slate-800 dark:text-slate-200">${c.name} <span class="text-[10px] font-normal text-slate-500">(${c.origin})</span></span>
-                            <span class="text-[10px] text-slate-400">${c.date}</span>
+            headlineHtml += `</div>`;
+            headlineSection.innerHTML = headlineHtml;
+
+            // 2. Render Grid Semua Berita (Mulai dari berita ke-4 dst)
+            const remainingNews = newsList.length > 3 ? newsList.slice(3) : newsList;
+            let gridHtml = '';
+
+            remainingNews.forEach(item => {
+                const snippet = item.isi.length > 120 ? item.isi.substring(0, 120) + '...' : item.isi;
+                gridHtml += `
+                    <div class="bg-darkCard border border-slate-800 rounded-2xl p-5 hover:border-brandGold/50 transition flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-slate-800 text-amber-400 font-bold px-2 py-0.5 rounded text-[10px]">
+                                    ${escapeHtml(item.kategori || 'Umum')}
+                                </span>
+                                <span class="text-slate-400 text-[11px]"><i class="far fa-calendar-alt me-1"></i>${escapeHtml(item.tanggal || '')}</span>
+                            </div>
+                            <h4 class="text-base font-bold text-white hover:text-amber-300 transition cursor-pointer" onclick="bukaBerita('${item.id}')">
+                                ${escapeHtml(item.judul)}
+                            </h4>
+                            <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                                ${escapeHtml(snippet)}
+                            </p>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${c.text}</p>
+                        <div class="pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs">
+                            <span class="text-slate-500"><i class="far fa-user me-1"></i>${escapeHtml(item.penulis || 'Redaksi')}</span>
+                            <button onclick="bukaBerita('${item.id}')" class="font-bold text-brandGold hover:underline text-xs">
+                                Baca <i class="fas fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             });
-            container.innerHTML = html;
+
+            beritaGrid.innerHTML = gridHtml;
         }
 
-        function submitComment() {
-            const name = document.getElementById('comment-name').value.trim();
-            const origin = document.getElementById('comment-origin').value.trim();
-            const text = document.getElementById('comment-text').value.trim();
-
-            if (!name || !text) {
-                showToast('Perhatian', 'Nama dan isi komentar wajib diisi.', 'error');
-                return;
-            }
-
-            const art = articles.find(a => a.id === currentActiveArticleId);
-            if (!art) return;
-
-            if (!art.comments) art.comments = [];
-            art.comments.unshift({
-                name,
-                origin: origin || 'Warga DIY',
-                text,
-                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-            });
-
-            saveStoredArticles(articles);
-            renderComments(art);
-
-            document.getElementById('comment-name').value = '';
-            document.getElementById('comment-origin').value = '';
-            document.getElementById('comment-text').value = '';
-            showToast('Komentar Terkirim', 'Tanggapan Anda berhasil ditambahkan.', 'success');
-        }
-
-        // ================= CMS ADMIN FUNCTIONS =================
-        function updateStats() {
-            const total = articles.length;
-            const published = articles.filter(a => a.isPublished).length;
-            const drafts = total - published;
-            const totalViews = articles.reduce((sum, a) => sum + a.views, 0);
-
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-published').innerText = published;
-            document.getElementById('stat-drafts').innerText = drafts;
-            document.getElementById('stat-views').innerText = totalViews.toLocaleString('id-ID');
-        }
-
-        function renderCmsTable() {
-            const tbody = document.getElementById('cms-table-body');
-            let html = '';
-
-            articles.forEach(art => {
-                html += `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-                        <td class="p-4 max-w-xs">
-                            <div class="flex items-center gap-3">
-                                <img src="${art.image}" class="w-12 h-12 rounded-xl object-cover shrink-0 bg-slate-200" onerror="this.src='https://placehold.co/100x100/004aad/ffffff?text=Desa'">
-                                <div>
-                                    <span class="font-extrabold text-slate-800 dark:text-slate-100 line-clamp-1">${art.title}</span>
-                                    <span class="inline-block mt-0.5 text-[10px] bg-brandBlue/10 text-brandBlue dark:text-amber-300 font-bold px-2 py-0.5 rounded">${art.category}</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4 text-slate-600 dark:text-slate-300 font-medium">${art.author}</td>
-                        <td class="p-4">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold ${art.isPublished ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'}">
-                                ${art.isPublished ? 'Terbit' : 'Draf'}
-                            </span>
-                            ${art.isFeatured ? '<span class="ms-1 px-2 py-0.5 bg-amber-500 text-white font-extrabold text-[9px] rounded-full">Headline</span>' : ''}
-                        </td>
-                        <td class="p-4 text-center font-bold text-slate-700 dark:text-slate-300">${art.views}</td>
-                        <td class="p-4 text-right space-x-2 whitespace-nowrap">
-                            <button onclick="editArticle('${art.id}')" class="px-2.5 py-1.5 bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue dark:text-amber-400 font-bold rounded-lg transition" title="Edit Artikel">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="togglePublishStatus('${art.id}')" class="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-300 font-bold rounded-lg transition" title="Ubah Status Terbit">
-                                <i class="fas fa-toggle-on"></i>
-                            </button>
-                            <button onclick="deleteArticle('${art.id}')" class="px-2.5 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 font-bold rounded-lg transition" title="Hapus Artikel">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = html;
-            updateStats();
-        }
-
-        function openNewArticleForm() {
-            document.getElementById('form-article-id').value = '';
-            document.getElementById('form-title').value = '';
-            document.getElementById('form-category').value = 'Berita DIY';
-            document.getElementById('form-image').value = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80';
-            document.getElementById('form-author').value = 'Tim Redaksi Kalurahan DIY';
-            document.getElementById('form-summary').value = '';
-            document.getElementById('form-content').value = '';
-            document.getElementById('form-is-published').checked = true;
-            document.getElementById('form-is-featured').checked = false;
-            document.getElementById('form-title-label').innerHTML = '<i class="fas fa-pen-nib text-brandBlue dark:text-amber-400"></i> Tulis Berita Baru';
-            document.getElementById('article-form-card').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function resetArticleForm() {
-            openNewArticleForm();
-        }
-
-        function useRandomPresetImage() {
-            const presets = [
-                'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80'
-            ];
-            const randomImg = presets[Math.floor(Math.random() * presets.length)];
-            document.getElementById('form-image').value = randomImg;
-            showToast('Gambar Dipilih', 'URL gambar acak berhasil disematkan.', 'info');
-        }
-
-        function saveArticle(e) {
-            e.preventDefault();
-            const id = document.getElementById('form-article-id').value;
-            const title = document.getElementById('form-title').value.trim();
-            const category = document.getElementById('form-category').value;
-            const image = document.getElementById('form-image').value.trim();
-            const author = document.getElementById('form-author').value.trim();
-            const summary = document.getElementById('form-summary').value.trim();
-            const content = document.getElementById('form-content').value.trim();
-            const isPublished = document.getElementById('form-is-published').checked;
-            const isFeatured = document.getElementById('form-is-featured').checked;
-
-            if (isFeatured) {
-                // Unset other featured articles
-                articles.forEach(a => a.isFeatured = false);
-            }
-
-            if (id) {
-                // Edit existing
-                const idx = articles.findIndex(a => a.id === id);
-                if (idx !== -1) {
-                    articles[idx] = {
-                        ...articles[idx],
-                        title,
-                        category,
-                        image,
-                        author,
-                        summary,
-                        content,
-                        isPublished,
-                        isFeatured
-                    };
-                }
-                showToast('Berhasil Disimpan', 'Artikel berita berhasil diperbarui.', 'success');
+        // Filter Kategori
+        window.filterKategori = function(kat) {
+            if (kat === 'Semua') {
+                renderWebsite(allNews);
             } else {
-                // Create new
-                const newArt = {
-                    id: 'art-' + Date.now(),
-                    title,
-                    category,
-                    image,
-                    author,
-                    date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
-                    summary,
-                    content,
-                    isPublished,
-                    isFeatured,
-                    views: 12,
-                    comments: []
-                };
-                articles.unshift(newArt);
-                showToast('Berhasil Diterbitkan', 'Artikel berita baru telah ditambahkan ke sistem.', 'success');
+                const filtered = allNews.filter(n => n.kategori === kat);
+                renderWebsite(filtered);
             }
+        };
 
-            saveStoredArticles(articles);
-            renderCmsTable();
-            renderPortalContent();
-            renderTicker();
-            resetArticleForm();
-        }
+        // Modal Reader
+        window.bukaBerita = function(id) {
+            const item = window.dataBerita[id];
+            if (!item) return;
 
-        function editArticle(id) {
-            const art = articles.find(a => a.id === id);
-            if (!art) return;
+            document.getElementById('modalJudul').innerText = item.judul;
+            document.getElementById('modalKategori').innerText = item.kategori || 'Umum';
+            document.getElementById('modalTanggal').innerText = '📅 ' + (item.tanggal || '');
+            document.getElementById('modalPenulis').innerText = '✍️ Penulis: ' + (item.penulis || 'Redaksi');
+            document.getElementById('modalIsi').innerText = item.isi;
 
-            document.getElementById('form-article-id').value = art.id;
-            document.getElementById('form-title').value = art.title;
-            document.getElementById('form-category').value = art.category;
-            document.getElementById('form-image').value = art.image;
-            document.getElementById('form-author').value = art.author;
-            document.getElementById('form-summary').value = art.summary;
-            document.getElementById('form-content').value = art.content;
-            document.getElementById('form-is-published').checked = art.isPublished;
-            document.getElementById('form-is-featured').checked = art.isFeatured || false;
-            document.getElementById('form-title-label').innerHTML = `<i class="fas fa-edit text-brandBlue dark:text-amber-400"></i> Edit Artikel: ${art.title.substring(0, 30)}...`;
+            const modal = document.getElementById('newsModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
 
-            document.getElementById('article-form-card').scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById('btnCloseModal').addEventListener('click', () => {
+            document.getElementById('newsModal').classList.add('hidden');
+        });
 
-        function togglePublishStatus(id) {
-            const art = articles.find(a => a.id === id);
-            if (!art) return;
-            art.isPublished = !art.isPublished;
-            saveStoredArticles(articles);
-            renderCmsTable();
-            renderPortalContent();
-            renderTicker();
-            showToast('Status Diubah', `Artikel "${art.title.substring(0, 20)}..." kini berstatus ${art.isPublished ? 'Terbit' : 'Draf'}.`, 'info');
-        }
-
-        function deleteArticle(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus artikel berita ini secara permanen?')) {
-                articles = articles.filter(a => a.id !== id);
-                saveStoredArticles(articles);
-                renderCmsTable();
-                renderPortalContent();
-                renderTicker();
-                showToast('Artikel Dihapus', 'Berita berhasil dihapus dari sistem.', 'success');
-            }
-        }
-
-        function restoreDefaultData() {
-            if (confirm('Reset akan mengembalikan seluruh berita ke data contoh awal. Lanjutkan?')) {
-                articles = [...defaultArticles];
-                saveStoredArticles(articles);
-                renderCmsTable();
-                renderPortalContent();
-                renderTicker();
-                showToast('Reset Berhasil', 'Data berita telah dikembalikan ke kondisi awal.', 'success');
-            }
-        }
-
-        function exportDataJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(articles, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "mediadesa_diy_backup_" + new Date().toISOString().slice(0,10) + ".json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast('Backup Berhasil', 'File cadangan JSON berhasil diunduh.', 'success');
-        }
-
-        // Testimonial Carousel Controls
-        function nextTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
-            updateTestimonialDisplay();
-        }
-
-        function prevTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex - 1 + testimonials.length) % testimonials.length;
-            updateTestimonialDisplay();
-        }
-
-        function updateTestimonialDisplay() {
-            const t = testimonials[currentTestimonialIndex];
-            document.getElementById('testimonial-quote').innerText = `"${t.quote}"`;
-            document.getElementById('testimonial-avatar').innerText = t.avatar;
-            document.getElementById('testimonial-name').innerText = t.name;
-            document.getElementById('testimonial-role').innerText = t.role;
-        }
-
-        // Toast Notification Helper
-        function showToast(title, message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastTitle = document.getElementById('toast-title');
-            const toastMsg = document.getElementById('toast-msg');
-            const toastIcon = document.getElementById('toast-icon');
-
-            toastTitle.innerText = title;
-            toastMsg.innerText = message;
-
-            if (type === 'success') {
-                toastIcon.className = 'fas fa-check-circle text-emerald-400 text-lg';
-            } else if (type === 'error') {
-                toastIcon.className = 'fas fa-exclamation-circle text-rose-400 text-lg';
-            } else {
-                toastIcon.className = 'fas fa-info-circle text-amber-400 text-lg';
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3500);
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>
